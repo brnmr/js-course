@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello, world!</title>
+    <script type="text/javascript">
+        /* Homework 01.Introduction:
+         * Ask the user for his/her title, first name and last name
+         * and print it via alert. After that change the page title with the
+         * greeting.
+         */
+
+        var title = prompt('Please enter your desired title: ');
+        var fname = prompt('Please enter your first name: ');
+        var lname = prompt('Please enter your last name: ');
+
+        alert('Hello, ' + ' ' + title + ' ' + fname + ' ' + lname + '!');
+
+        // change browser title line
+        document.documentElement.firstChild.firstChild.nextSibling.innerHTML = 'Hello! ' + ' ' + title + ' ' + fname + ' ' + lname;
+    </script>
+</head>
+<body>
+
+</body>
+</html>
