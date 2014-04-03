@@ -12,11 +12,12 @@
         var title = prompt('Please enter your desired title: ');
         var fname = prompt('Please enter your first name: ');
         var lname = prompt('Please enter your last name: ');
+        var greeting = title + ' ' + fname + ' ' +lname;
 
-        alert('Hello, ' + ' ' + title + ' ' + fname + ' ' + lname + '!');
+        alert('Hello, ' + greeting + '!');
 
         // change browser title line
-        document.documentElement.firstChild.firstChild.nextSibling.innerHTML = 'Hello! ' + ' ' + title + ' ' + fname + ' ' + lname;
+        document.documentElement.firstChild.firstChild.nextSibling.innerHTML = 'Hello! ' + greeting +'!';
     </script>
 </head>
 <body>
