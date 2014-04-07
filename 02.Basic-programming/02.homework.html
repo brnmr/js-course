@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>02.Basic Programming - Homework</title>
+    <script type="text/javascript">
+        /* Homework 02.Basic Programming:
+         * Print every array's element with product's name and price.
+         * The name has to be left aligned, while the price - right aligned.
+         * Please note that the MAX length of each line has to be 65 symbols.
+         */
+
+        //The array
+        var shopping_cart = [
+            { product : 'T-shirt', price : 10 },
+            { product : 'Jeans', price : 69.9 },
+            { product : 'Jacket', price : 119.99 }
+        ];
+
+        for ( i = 0; i < shopping_cart.length; i++ ) {
+
+            var properties_length = shopping_cart[ i ].product.length + shopping_cart[ i ].price.toString().length; //Get the sum of symbols of product property and price property
+            var max_length = 65 - properties_length; //Get the symbols that have to be added
+
+            shopping_cart[ i ].spaces = ''; //Add new property that will hold the needed symbols (spaces) for the aligning
+
+            //Add the corresponding symbols to the spaces property according to the max_length
+            for ( j = 0; j < max_length; j++ ) {
+                shopping_cart[ i ].spaces += ' '
+
+            }
+
+            //Print the elements from the array
+            console.log( shopping_cart[ i ].product + ': ' + shopping_cart[ i ].spaces + shopping_cart[ i ].price );
+
+        }
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
