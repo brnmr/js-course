@@ -18,6 +18,8 @@
 
         for ( i = 0; i < shopping_cart.length; i++ ) {
 
+            shopping_cart[ i ].price = shopping_cart[ i ].price.toFixed( 2 ); //Transform the price into number with two digits after the decimal point
+
             var properties_length = shopping_cart[ i ].product.length + shopping_cart[ i ].price.toString().length; //Get the sum of symbols of product property and price property
             var max_length = 65 - properties_length; //Get the symbols that have to be added
 
@@ -25,6 +27,7 @@
 
             //Add the corresponding symbols to the spaces property according to the max_length
             for ( j = 0; j < max_length; j++ ) {
+
                 shopping_cart[ i ].spaces += ' '
 
             }
