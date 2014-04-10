@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>typeOf</title>
+    <script type="text/javascript">
+
+        /*
+         *  03. Logic and Loops Homework Variant II:
+         *  Create function typeOf, which will return the correct type of the input data
+         */
+
+
+        function typeOf( variable ) {
+
+            switch ( true ) {
+                case variable !== variable : // check if the input data is NaN
+                    return 'NaN';
+
+                case typeof variable === 'undefined' :
+                    return 'undefined';
+
+                case typeof variable === 'number' || variable instanceof Number :
+                    return 'number';
+
+                case variable === null :
+                    return 'null';
+
+                case typeof variable === 'boolean' || variable instanceof Boolean :
+                    return 'boolean';
+
+                case typeof variable === 'string' || variable instanceof String :
+                    return 'string';
+
+                case variable instanceof Array :
+                    return 'array';
+
+                default :
+                    return 'object';
+
+            }
+        }
+
+
+        // our test cases
+        var types = {
+            'undefined' : [ undefined ],
+            'null'      : [ null ],
+            'NaN'       : [ NaN ],
+            'boolean'   : [ false, new Boolean(true) ],
+            'string'    : [ 'lorem', new String('ipsum') ],
+            'number'    : [ 1, new Number(0) ],
+            'array'     : [ [] ],
+            'object'    : [ {} ]
+        };
+        for ( var type in types ) {
+            types[ type ].forEach( function ( item ) {
+                console.assert( typeOf( item ) === type, item + ' is ' + type );
+            });
+        }
+
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
