@@ -14,15 +14,15 @@
 
             switch ( true ) {
                 case variable !== variable : // check if the input data is NaN
-                    console.log( 'It\'s NaN' );
+                    return 'NaN';
                     break;
 
                 case typeof variable === 'undefined' : // check if the input data is undefined
-                    console.log( 'It\'s undefined' );
+                    return 'undefined';
                     break;
 
                 default :
-                    console.log( 'It\'s ', Object.prototype.toString.call( variable ) ); // get the type of the input data
+                    return Object.prototype.toString.call( variable).match(/\s([a-z|A-Z]+)/)[1].toLowerCase(); // the default behavior
             }
         }
 
