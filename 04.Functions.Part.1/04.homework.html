@@ -10,6 +10,42 @@
          * all data from a Object
          */
 
+        function walk( data, level ) {
+
+            level = level || 1;
+
+            for ( var property in data ) {
+                if ( data.hasOwnProperty( property )) {
+
+                    switch ( true ) {
+                        case data[ property ] instanceof Array :
+                            console.log( property + ': ' );
+                            for ( i = 0, l = data[ property ].length; i < l; i += 1 ) {
+                                j = i + 1;
+                                console.log( new Array( 3 ).join( ' ' ) + j + '. ' + data[ property ][ i ]);
+                            }
+                            break;
+
+                        case typeof data[ property ] == 'object' :
+                            level += 1;
+                            console.log( property + ': ' );
+                            arguments.callee( data[ property ], level );
+                            break;
+
+                        case typeof data[ property ] == 'string' || typeof data[ property ] == 'number' :
+                             if ( level > 1) {
+                                console.log( new Array(3).join( ' ' ) + property + ': ' + data[ property ] );
+                             }
+                             else {
+                                 console.log( property + ': ' + data[ property ] );
+                             }
+                            break;
+
+                    }
+
+                }
+            }
+        }
 
         walk({
             'Course Name'        : 'JavaScript for beginners',
@@ -22,33 +58,7 @@
                 'Age'    : 29,
                 'Title'  : 'Front-end Architect'
             }
-        });
-
-        function walk( data, level ) {
-
-            level = level || 1; // default level value will be 1
-
-            for ( var property in data ) {
-                if ( data.hasOwnProperty( property ) ) {
-                    if ( typeof data[ property ] == 'object' ) {
-                        level += 1;
-                        console.log( property + ': ' );
-                        arguments.callee( data[ property ], level ); //recursion
-                    }
-                    else {
-                        switch ( true ) {
-                            case level == 1 :
-                                console.log( property + ":  " + data[ property ] );
-                                break;
-                            case level > 1:
-                                console.log( new Array( 3 ).join(' ') + property + ":  " + data[ property ] );
-                                break;
-                        }
-
-                    }
-                }
-            }
-        }
+        })
 
     </script>
 </head>
