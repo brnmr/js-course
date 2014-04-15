@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>04. Functions Part 1</title>
+    <script type="text/javascript">
+
+        /*
+         * 04. Functions (Part 1) Homework
+         * Create a recursive function which will output in the console
+         * all data from a Object
+         */
+
+
+        walk({
+            'Course Name'        : 'JavaScript for beginners',
+            'Duration (hours)'   : 36,
+            'Student List'       : [
+                'Tom', 'John', 'Jane', 'Jill', 'Peter'
+            ],
+            'Lector'             : {
+                'Name'   : 'Hristo Chakarov',
+                'Age'    : 29,
+                'Title'  : 'Front-end Architect'
+            }
+        });
+
+        function walk( data, level ) {
+
+            level = level || 1; // default level value will be 1
+
+            for ( var property in data ) {
+                if ( data.hasOwnProperty( property ) ) {
+                    if ( typeof data[ property ] == 'object' ) {
+                        level += 1;
+                        console.log( property + ': ' );
+                        arguments.callee( data[ property ], level ); //recursion
+                    }
+                    else {
+                        switch ( true ) {
+                            case level == 1 :
+                                console.log( property + ":  " + data[ property ] );
+                                break;
+                            case level > 1:
+                                console.log( new Array( 3 ).join(' ') + property + ":  " + data[ property ] );
+                                break;
+                        }
+
+                    }
+                }
+            }
+        }
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
