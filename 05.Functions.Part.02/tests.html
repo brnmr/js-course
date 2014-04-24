@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>05. Functions Part 2</title>
+    <script type="text/javascript">
+
+    //Normal functions
+    function normalFn() {
+        return 'normaln function';
+    }
+
+
+    //Declare anonymous function
+    (function () {
+        return 'anonymous';
+    });
+
+    var anonimFn = function () {
+        return 'anonymous';
+    }
+
+    //Custom Assert Function with Callbacks
+    function customAssert( is_true, call_ok, call_fail ) {
+        // Short variant
+        //is_true ? call_ok( 'Statement Match' ) : call_fail( 'Statemant does not match' );
+        if ( is_true ) {
+            call_ok( 'Statement Match' );
+        } else {
+            call_fail( 'Statement does not match' );
+        }
+    };
+
+    console.log( '1st: '); 
+    customAssert( 4 == 4, console.info, console.error );
+    console.log( '2nd: '); 
+    customAssert( 'number' == 'number', console.info, console.error );
+    console.log( '3rd: '); 
+    customAssert( 'number' == '5', console.info, console.error );
+    console.log( '4th: '); 
+    customAssert( 4 == 5, console.info, console.error );
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

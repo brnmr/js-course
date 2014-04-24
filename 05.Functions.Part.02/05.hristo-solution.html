@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>05. Homework - Hristo Solution</title>
+    <script src="../helpers.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+
+    /**
+     * @class Storage
+     *
+     * Creates local storage object that provides setters/getters for
+     * storing/retrieving data.
+     *
+     **/
+    function Storage() {
+        var data = {}; // private object to store our data
+
+        this.get = function ( name ) {
+            return data[ name ];
+        };
+        this.set = function ( name, value ) {
+            data[ name ] = value;
+        };
+        this.getMultiple = function ( names ) {
+            var result = []; // create empty results array
+            // loop passed `names` array & populate the `result`
+            for ( var i = 0, l = names.length; i < l; i += 1 ) {
+                result.push( data[ names[ i ] ] );
+            }
+            return result;
+        };
+        this.setMultiple = function ( pairs ) {
+            extend( data, pairs );
+        };
+    }
+
+    // Instantiation
+    var storage          = new Storage();
+    var another_storage  = new Storage();
+
+    /*---------------------------------------------------------------- TEST CASES */
+    // `get`, `set`
+    storage.set( 'name', 'Hristo' );
+    console.assert( storage.get('name') == 'Hristo', 'The `name` is properly set to "Hristo"' );
+    console.assert( typeof( storage.name ) == 'undefined', 'Properties set via `set` are encapsulated' );
+
+    // `getMultiple`, `setMultiple`
+    storage.setMultiple({
+        age      : 28,
+        gender   : 'male'
+    });
+    console.assert( storage.get('age') == 28, 'The `age` is properly set to 28' );
+    console.assert( storage.getMultiple([ 'name', 'gender' ]).toString() == 'Hristo,male', '`name` and `gender` have "Hristo" and "male" values' );
+    console.assert( typeof( storage.gender ) == 'undefined', 'Properties set via `setMultiple` are encapsulated' );
+
+    // properties set directly should not affect the storage
+    storage.position  = 'Front-end architect';
+    console.assert( storage.get('position') === undefined, 'Properties can only be set via `set` and `setMultiple` methods' );
+
+    // different Storage instances must not interfere
+    console.assert( ! another_storage.position && ! another_storage.get('name'), 'Every `Storage` instance has its own set of properties' );
+
+    </script>
+</body>
+</html>
