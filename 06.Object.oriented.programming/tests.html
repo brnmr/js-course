@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>06. Object Oriented Programming - JavaScript</title>
+    <script src="../helpers.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+    //Function that will be our Class
+    function Animal( type, gender ) {
+        //Properties
+        this.type   = type; // 'type' is public property
+        var _gender = gender; // '_gender' is private property
+
+        //Methods
+            //Public
+        this.sound = function ( sound ) {
+            console.log( sound );
+        };
+        this.speak = function () {
+            console.log( 'Hello, I am ' + getGender() + ' ' + type );
+        }
+            //Private
+        function getGender() {
+            return _gender;
+        }
+    };
+
+    // create a 'cat' object which is instance of 'Animal'
+    // the 'cat' instance will inherit all Properties and Methods from 'Animal'
+    var cat = new Animal( 'cat', 'male' );
+    cat.sound('meouwww'); // logs: meaouww
+    cat.speak(); // logs: Hello, I am male cate
+    cat._gender; // logs: undefined, because '_gender' is a private property
+    //cat.getGender(); // logs: TypeError: undefined is not a function, because getGender() is a private methods
+
+    // SEPARATOR
+    console.log( new Array(10).join('-'), 'Context in private methods', new Array(10).join('-'));
+    // SEPARATOR
+
+    // Context in private methods
+    function Person( name ) {
+        this.name = name;
+        function getName() {
+            return this.name;
+        };
+        console.log( getName(), ', undefined' ); // logs: undefined, because this.name in getName() points to getName() not to Person
+    };
+
+    var person = new Person( 'Elena' );
+
+    // Optimization of Person
+    function PersonOpt( name ) {
+        this.name = name;
+        var getName = function () {
+            return this.name;
+        }.bind( this );
+        console.log( getName() ); // logs: 'name', because now we've changed the context of the getName via using the bind( this );
+    };
+
+    var personOpt = new PersonOpt( 'Branimir' );
+
+    // SEPARATOR
+    console.log( new Array(10).join('-'), 'Prototype', new Array(10).join('-'));
+    // SEPARATOR
+
+    var arr = []; // creating new Array
+    console.log( arr.forEach === Array.prototype.forEach ); // logs" true
+    console.log( arr.shift   === Array.prototype.shift ); // logs" true
+
+    // overwrite inherited method from the prototype, this won't affect the prototype or other instances of Array
+    arr.push = function () {};
+    console.log( arr.push === Array.prototype.push ); // logs" false
+    var newarr = new Array();
+    console.log( newarr.push === Array.prototype.push ); // logs" true
+
+     // SEPARATOR
+    console.log( new Array(10).join('-'), 'Prototype Chain', new Array(10).join('-'));
+    // SEPARATOR
+
+    function Human ( name ) {
+       this.name = name;
+    };
+
+    var human = new Human( 'homo sapiens' );
+    console.log( human.hasOwnProperty( 'name' ) ); // logs: true
+    // Lets create new property in Human's prototype
+    Human.prototype.age = 0;
+    console.log( human.hasOwnProperty( 'age' ) ); // logs: false
+    console.log( human.age ); // logs: 0, because it takes the value from the prototype of Human => Prototype Chain
+    human.age = 27; // let's change the value of 'age'
+    console.log( human.hasOwnProperty( 'age' ), 'it\'s: ' + human.age ); // logs: true
+    console.log( 'Human\'s age is: ' + Human.prototype.age ); // logs: true
+
+     // SEPARATOR
+    console.log( new Array(10).join('-'), 'Inheritance', new Array(10).join('-'));
+    // SEPARATOR
+
+    // Base 'Animal' class
+    function Monkey( type ) {
+        this.type  = type;
+        this.speak = function () {};
+    };
+
+    // 'Pavian' class
+    // Create prototype object from new instance of 'Animal'
+    Pavian.prototype = new Monkey( 'pavian' );
+    function Pavian() {
+        this.speak = function () {
+            console.log( 'I am pavian');
+        };
+    };
+    
+     // SEPARATOR
+    console.log( new Array(10).join('-'), 'Creation of Class', new Array(10).join('-'));
+    // SEPARATOR
+
+        /**
+    * @function Class
+    * @constructor
+    *
+    * Class creator
+    *
+    * @param prototype {Object} The prototype object
+    *
+    * @returns {Function} constructor
+    **/
+    function Class( prototype ) {
+       prototype = prototype || {};
+       var parent = typeof prototype.Extends == 'function' ? prototype.Extends.prototype : {};
+       // create our constructor - use provided `initialize`
+       // method or create empty function
+       var constructor = prototype.initialize || parent.initialize || function () {};
+       // set the prototype object
+       // inherit properties & methods from the parent class
+       constructor.prototype = extend( {}, parent, prototype );
+       // set name to all annonymous functions
+       for ( var name in constructor.prototype ) {
+          if ( typeof( constructor.prototype[ name ] ) == 'function' ) {
+             // set the same name as the key
+             constructor.prototype[ name ].__name__ = name;
+          }
+       }
+       // make parent method calling available via `this.parent()`
+       constructor.prototype.parent = function () {
+          var fn = parent[ arguments.callee.caller.__name__ ];
+          if ( typeof fn !== 'function' ) {
+             throw new Error('Cannot call `parent`');
+          }
+          return fn.apply( this, arguments );
+       }
+       return constructor;
+    }
+    
+    function Bird ( type ) {
+        this.type = type;
+        this.move = function ( position ) {
+            this.position = position;
+        }
+    }
+
+    var Hawk = new Class({
+
+        Extends : Bird, // our parent class is 'Animal'
+
+        // This is our 'Hawk' constructor
+        initialize : function ( name ) {
+            this.name = name;
+        },
+
+        // Public Methods
+        move : function ( position ) {
+            this.parent( position ); // call Bird move method
+            console.log( 'Wave the wings');
+            console.log( 'Position reached', position );
+        }
+
+    });
+
+    </script>
+</body>
+</html>
