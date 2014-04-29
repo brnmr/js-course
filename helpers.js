@@ -93,3 +93,36 @@ function extend( obj ) {
 });
 
 
+function generateID( prefix ) {
+    return ( prefix || 'id' ) + '-' + Math.round(Math.random() * 1000000000) + new Date().getTime();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
