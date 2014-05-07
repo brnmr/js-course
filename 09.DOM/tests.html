@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>09. Document Object Model - DOM</title>
+        <script src="../helpers.js"></script>
+        <script src="../DOM_api.js"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+            console.log( document.getElementById( 'my-element' ) ); // logs null because the element is still not created
+        </script>
+
+        <div id="my-element"> </div>
+        <div class="division small-division"> </div>
+        <div class="division big-division"> </div>
+
+        <script type="text/javascript">
+            //getElement(s)ById
+            console.log( document.getElementById( 'my-element' ) );  // logs the element
+            console.log( document.getElementsByTagName( 'div' ) );  // logs all div elements
+
+            //getElement(s)ByClassName
+            console.log( document.getElementsByClassName( 'division' ) ); // logs all elements with class name division (2)
+            console.log( document.getElementsByClassName( 'division small-division' ) ); // logs all elements with class name division and small-division (1)
+            console.log( document.getElementsByClassName( 'division big-division' ) ); // logs all elements with class name division and big-division (1)
+            console.log( document.getElementsByClassName( 'small-division big-division' ) ); // logs empty collection because there is no element with the two class names (0)
+        </script>
+    </body>
+</html>
