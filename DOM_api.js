@@ -79,17 +79,102 @@ function getChildren( elem ) {
     });
 }
 
+/** 
+ * @function inject
+ * 
+ * Injects element related to another element in the DOM
+ *
+ * @param relative   {HTMLElement}  The element relative to which we want to place our element
+ * @param where      {String}       The position related to the relative element, default "bottom"
+ * @param elem       {HTMLElement}  The element we want to inject
+**/
+function inject( relative, where, elem ) {
+   if ( ! elem || ! relative ) {
+      throw new Error( '`inject` requires `elem` and `relative` params' );
+   }
+   // default position is "bottom"
+   if ( ['top', 'bottom', 'before', 'after'].indexOf( where ) < 0 ) {
+      where = 'bottom';
+   }
+   switch ( where ) {
+   case 'bottom':
+      relative.appendChild( elem );
+      break;
+   case 'top':
+      // try insertBefore firstChild
+      var first_child = getChildren( relative )[0];
+      first_child && relative.insertBefore( elem, first_child ) ||
+            relative.appendChild( elem );
+      break;
+   case 'before':
+      var parent_node = relative.parentNode;
+      // we just can't inject before `document`, <html>
+      if ( [undefined, document, document.documentElement].indexOf( parent_node ) > -1 ) {
+         throw new Error( 'Cannot `inject` "before"' );
+      }
+      parent_node.insertBefore( elem, relative );
+      break;
+   case 'after':
+      var next_sibling = getNext( relative );
+      if ( next_sibling ) {
+         inject( next_sibling, 'before', elem );
+      } else if ( relative.parentNode ) {
+         // appendChild will do here
+         relative.parentNode.appendChild( elem );
+      } else {
+         throw new Error( 'Cannot `inject` "after"' );
+      }
+   }
+}
+
+/** 
+ * @function grab
+ * 
+ * Adopts given element
+ *
+ * @param child   {HTMLElement}  The element we want to adopt
+ * @param where   {String}       The position we want to inject the child, default "bottom"
+ * @param elem    {HTMLElement}  The parent element
+**/
+function grab( child, where, elem ) {
+   if ( ['top', 'bottom'].indexOf( where ) < 0 ) {
+      where = 'bottom';
+   }
+   inject( elem, where, child );
+}
+
+/** 
+ * @function wrap
+ * 
+ * Injects element next to a specified element and then adopts that element
+ *
+ * @param child   {HTMLElement}  The element we want to adopt
+ * @param where   {String}       The position we want to inject the child, default "bottom"
+ * @param elem    {HTMLElement}  The parent element
+**/
+function wrap( child, where, elem ) {
+   // first `inject` the `elem` next to the `child`
+   inject( child, 'before', elem );
+   // then grab the `child`
+   grab( child, where, elem );
+}
+
 // Adding these methods to HTMLElement.prototype
 [
-    'getElemsByTag',
-    'getElemsByClass',
-    'getPrevious',
-    'getNext',
-    'getChildren'
+   'getElemsByTag',
+   'getElemsByClass',
+   'getPrevious',
+   'getNext',
+   'getChildren',
+   'getStyle',
+   'setStyle',
+   'inject',
+   'grab',
+   'wrap'
 ].forEach( function ( fn ) {
-        HTMLElement.prototype[ fn ] = function () {
-            var args = [].slice.call( arguments );
-            args.push( this );
-            return window[ fn ].apply( null, args );
-        }
-    });
+   HTMLElement.prototype[ fn ] = function () {
+      var args = [].slice.call( arguments );
+      args.push( this );
+      return window[ fn ].apply( null, args );
+   }
+});
