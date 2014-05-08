@@ -178,3 +178,17 @@ function wrap( child, where, elem ) {
       return window[ fn ].apply( null, args );
    }
 });
+
+/*--------------------------------------------------------------- MISSING API */
+
+/**
+ * HTMLElement.prototype.remove
+ *
+ * Removes an element from DOM
+ *
+ * @returns {HTMLElement}
+**/
+! HTMLElement.prototype.remove && (HTMLElement.prototype.remove = function () {
+   this.removeNode( true );
+   return this;
+});
