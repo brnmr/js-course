@@ -192,3 +192,83 @@ function wrap( child, where, elem ) {
    this.removeNode( true );
    return this;
 });
+
+/**
+ * HTMLElement.classList
+ *
+ * Define classList object that manages class names
+**/
+Object.defineProperty( HTMLElement.prototype, 'classList', {
+   enumerable : false,
+   configurable : true,
+   // Our getter - the returned value of that `get` function will be used as the
+   // `classList` object.
+   get : function () {
+      // create array with all class names
+      var list = this.className.split(' ').filter( function ( item ) {
+         // we don't want empty strings or falsy values here
+         return !!item;
+      });
+      
+      // create an object that will play the `classList` role
+      var classList = {
+         
+         length : list.length,
+         
+         add : function () {
+            for ( var i=0, l=arguments.length; i<l; i += 1 ) {
+               // make sure the class does not exist
+               if ( list.indexOf( arguments[i] ) < 0 ) {
+                  // add to our list with class names
+                  list.push( arguments[i] );
+               }
+            }
+            update();   // we have to update the `className` of the element
+         },
+         
+         remove : function () {
+            for ( var i=0, l=arguments.length; i<l; i += 1 ) {
+               // get the position of the class name we want to remove
+               var index = list.indexOf( arguments[i] );
+               if ( index > -1 ) {
+                  list.splice( index, 1 );
+               }
+            }
+            update();   // we have to update the `className` of the element
+         },
+         
+         toggle : function ( item ) {
+            if ( this.contains( item ) ) {
+               this.remove( item );
+               return false;
+            }
+            this.add( item );
+            return true;
+         },
+         
+         contains : function ( item ) {
+            return list.indexOf( item ) > -1;
+         },
+         
+         item : function ( i ) {
+            return list[ i ] || null;
+         },
+         
+         toString : function () {
+            return this.className;
+         }.bind( this )
+         
+      };
+      
+      // Declare a function that will update the `className` string every time
+      // a class name has been added/removed from the `classList`.
+      var update = function ( list, classList ) {
+         // convert the array with class names into a string
+         this.className    = list.join(' ');
+         // update `length` property
+         classList.length  = list.length;
+      }.bind( this, list, classList );   // `this` is our HTMLElement
+      
+      return classList;
+   }
+});
