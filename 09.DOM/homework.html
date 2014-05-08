@@ -14,6 +14,7 @@
 /** 
 * @function getElemsByClass
 * Usage: document.body.getElemsByClass('.test-element');   // returns collection (NodeList)
+* @param styleName {String} - css style property name
 **/
 
 function getElemsByClass( styleName ) {
@@ -21,41 +22,49 @@ function getElemsByClass( styleName ) {
 }
 
 /**
+*
 * @function getStyle
 * Usage: element.getStyle('color');                        // returns element.style.color, cross-browser
+* @param styleName {String}      - css style property name
+* @param el        {HTMLElement} - html element
+*
 **/
 
-function getStyle( el, styleName ) {
-    
-    var styleValue = '';
+function getStyle( styleName, el ) {
 
-    if ( document.defaultView && document.defaultView.getComputedStyle ) {
-        console.log('1'); 
-        styleValue = document.defaultView.getComputedStyle( el, '' ).getPropertyValue( styleName );
+  // Internet Explorer
+  if ( el.currentStyle ) {
 
-    }
-    else if ( el.currentStyle ) {
-        console.log('2'); 
-        styleName = styleName.replace( /\-(\w)/g, function ( strMatch, p1 ) {
+    return el.currentStyle[ styleName ];
 
-            return p1.toUpperCase();
+  } 
+  // Modern Browsers
+  else if ( document.defaultView && document.defaultView.getComputedStyle ) {
 
+    return document.defaultView.getComputedStyle( el, null ).getPropertyValue( styleName ); 
 
-        });
+  } 
 
-        styleValue = el.currentStyle[ styleName ];
+  else {
 
-    };
+    return null;
 
-    return styleValue;
+  }
+
 };
+
 
 /** 
 * @function setStyle
 * Usage: element.setStyle('opacity', .5);                  // returns element.style.opacity = .5, cross-browser
+* @param styleName  {String}      - css style property name
+* @param styleValue {String}      - css style property value
+* @param el         {HTMLElement} - HTML element
 **/
 
-function setStyle( name, value ) {
+function setStyle( styleName, styleValue, el ) { 
+  
+  el.style[styleName] = styleValue;
 
 };
 
@@ -68,11 +77,12 @@ var styles  = {
   'border'          : '1px solid #ff0000',
   'borderRadius'    : '5px'
 };
-/*
+
 for ( var name in styles ) {
   setStyle( name, styles[ name ], elem );
   console.assert( getStyle( name, elem ) == styles[ name ], 'Element does not have ' + name + ' style!' );
-}*/
+}
+
 </script>
 </body>
 </html>
