@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>09. Document Object Model - DOM - Homework</title>
+</head>
+<body>
+<div class="test-element">
+  Hello, DOM!
+</div>
+
+<script type="text/javascript" src="../helpers.js"></script>
+<script type="text/javascript" src="../DOM_api.js"></script>
+<script>
+/** 
+* @function getElemsByClass
+* Usage: document.body.getElemsByClass('.test-element');   // returns collection (NodeList)
+**/
+
+function getElemsByClass( styleName ) {
+    return document.getElementsByClassName( styleName );
+}
+
+/**
+* @function getStyle
+* Usage: element.getStyle('color');                        // returns element.style.color, cross-browser
+**/
+
+function getStyle( el, styleName ) {
+    
+    var styleValue = '';
+
+    if ( document.defaultView && document.defaultView.getComputedStyle ) {
+        console.log('1'); 
+        styleValue = document.defaultView.getComputedStyle( el, '' ).getPropertyValue( styleName );
+
+    }
+    else if ( el.currentStyle ) {
+        console.log('2'); 
+        styleName = styleName.replace( /\-(\w)/g, function ( strMatch, p1 ) {
+
+            return p1.toUpperCase();
+
+
+        });
+
+        styleValue = el.currentStyle[ styleName ];
+
+    };
+
+    return styleValue;
+};
+
+/** 
+* @function setStyle
+* Usage: element.setStyle('opacity', .5);                  // returns element.style.opacity = .5, cross-browser
+**/
+
+function setStyle( name, value ) {
+
+};
+
+// test cases
+var elem    = getElemsByClass('test-element')[0];
+var styles  = {
+  'color'           : '#ff0000',
+  'text-align'      : 'center',
+  'opacity'         : 0.5,
+  'border'          : '1px solid #ff0000',
+  'borderRadius'    : '5px'
+};
+/*
+for ( var name in styles ) {
+  setStyle( name, styles[ name ], elem );
+  console.assert( getStyle( name, elem ) == styles[ name ], 'Element does not have ' + name + ' style!' );
+}*/
+</script>
+</body>
+</html>
