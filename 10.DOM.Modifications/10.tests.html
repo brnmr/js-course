@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>10. Document Object Model Modifications</title>
+</head>
+<body>
+
+<div id="first" class="test-element">
+  Hello, DOM!
+  <p>Hello P</p>
+</div>
+
+<div class="div div-test div-test-test"> Test</div>
+
+<div class="last">Last</div>
+
+<script type="text/javascript" src="../helpers.js"></script>
+<script type="text/javascript" src="../DOM_api.js"></script>
+<script>
+
+// Get attribute
+  var testElement = document.getElementById( 'first' );  
+  console.log( testElement.getAttribute( 'class' ) ); // logs 'test-element'
+
+// Set Attribute
+  var testSetElement = document.querySelector( '.test-element p');
+  console.log( 'before we set id attribute: ' + testSetElement.getAttribute( 'id' ) );
+  testSetElement.setAttribute( 'id', 'theOne' );
+  console.log( 'after we set id attribute: ' + testSetElement.getAttribute( 'id' ) );
+
+  // Insert Elements
+  var toBeInsterted = document.querySelector( '.div-test' );
+  document.body.appendChild( toBeInsterted );
+</script>
+</body>
+</html>
