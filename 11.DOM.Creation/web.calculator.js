@@ -15,10 +15,11 @@
 		// create all buttons within the calculator and assigning content
 		for ( i = 0; i < 17; i += 1 ) {
 
+			var allButtons = []; // array with all buttons
 			var button = document.createElement( 'div' );
-			button.setAttribute( 'class', 'button' );
+			button.setAttribute( 'class', 'button' + ' ' + i );
 			button.innerHTML = i;
-
+			
 			switch ( i ) {
 				case 0 :
 					button.innerHTML = '8';
@@ -73,14 +74,36 @@
 					button.setAttribute( 'class', 'button equalize' );
 					break;
 			}
-			
+			allButtons.push( button ); // add every created button to the array
+			console.log( allButtons );
 			calcFragment.appendChild( button ); // add all buttons to the Fragment
+			
 
 		}
+
+		// Add event handlers to all buttons
+		//for ( var i = 0, l = allButtons.length; i < l, i += 1) {
+
+		//}
+
+
 		calc.setAttribute( 'class', 'calculator' );
-		calcDisplay.setAttribute( 'class', 'display' );				
+		calcDisplay.setAttribute( 'class', 'display' );					
 		calc.appendChild( calcFragment ); //
 
 		// Inject the content of calculator's into body
 		document.body.inject( document.querySelector( 'body' ), 'bottom', calc );
+
 	}
+
+
+	
+
+	function getButtonValue() {
+		var clicked = document.querySelector( '.button' )
+		var val = clicked.innerHTML;
+		console.log( val );
+		//return val;
+	}
+
+	
