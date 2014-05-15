@@ -5,13 +5,14 @@
 
 	function createCalculator2 () {
 
-		var calcContainer    = document.getElementById( 'calc2' );
-		var calcDisplay      = document.createElement( 'div' );
-		var calcFragmentWrap = document.createDocumentFragment(); 
+		var calcContainer    = document.getElementById( 'calc2' ); // Calculator's container
+		var calcDisplay      = document.createElement( 'div' ); // Calcilators' display
+		var calcFragmentWrap = document.createDocumentFragment(); // our Fragment
 
 		calcDisplay.setAttribute( 'class', 'display' );
-		calcFragmentWrap.appendChild( calcDisplay );
+		calcFragmentWrap.appendChild( calcDisplay ); // add Calculator's Dispaly to the Fragment
 
+		// Calculator Actions Obj
 		var actions = {
 			'equal'    : '=',
 			'plus'     : '+',
@@ -20,6 +21,7 @@
 			'multiply' : '*'
 		}
 
+		// Calculator Buttons Obj
 		var numbers = {
 			'button_00' : '0',
 			'button_01' : '1',
@@ -34,19 +36,19 @@
 		}
 
 		
-
+		// create all Action's buttons and add them to the Fragment
 		for ( var property in actions ) {
 			
 			if ( actions.hasOwnProperty( property ) ) {
 				var htmlEl = document.createElement( 'div' );
-				htmlEl.innerHTML = actions[ property ];	
-				//actions[ property ] = document.createElement( 'div' );					
+				htmlEl.innerHTML = actions[ property ];								
 				htmlEl.setAttribute( 'class', 'button action' );
 				calcFragmentWrap.appendChild( htmlEl );
 				
 			}
 		}
 
+		// create all Number's buttons and add them to the Fragment
 		for ( var property in numbers ) {
 			if ( numbers.hasOwnProperty( property ) ) {
 				var htmlEl = document.createElement( 'div' );
@@ -56,6 +58,8 @@
 			}
 		}
 
+		// Append the Fragment with all Calculator's components to Calculator's container
 		calcContainer.appendChild( calcFragmentWrap );
+		// inject the Calculator's container to the body
 		document.body.inject( document.querySelector( 'body' ), 'bottom', calcContainer );	
 }
