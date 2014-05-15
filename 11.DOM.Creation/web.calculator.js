@@ -86,7 +86,7 @@
 		calc.appendChild( calcFragment ); //
 
 		// Inject the content of calculator's into body
-		document.body.inject( document.querySelector( 'body' ), 'bottom', calc );
+		document.body.inject( calc, document.querySelector( 'body' ), 'bottom' );
 
 	}
 

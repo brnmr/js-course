@@ -62,7 +62,7 @@
 		// Append the Fragment with all Calculator's components to Calculator's container
 		calcContainer.appendChild( calcFragmentWrap );
 		// inject the Calculator's container to the body
-		document.body.inject( document.querySelector( 'body' ), 'bottom', calcContainer );	
+		document.body.inject( calcContainer, document.querySelector( 'body' ), 'bottom' );	
 }
 
 /* 
