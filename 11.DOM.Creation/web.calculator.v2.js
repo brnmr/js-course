@@ -18,7 +18,8 @@
 			'plus'     : '+',
 			'minus'    : '-',
 			'divide'   : '/',
-			'multiply' : '*'
+			'multiply' : '*',
+			'clear'    : 'C'
 		}
 
 		// Calculator Buttons Obj
@@ -81,7 +82,13 @@ function detectClick() {
 
 	for ( var i = 0, l = allArray.length; i < l; i += 1 ) {
 		allArray[ i ].addEventListener( 'click', function() {
+
+			if ( this.innerHTML == 'C' ) {
+				calcDisplay.innerHTML = '';
+			} 
+			else {
 			calcDisplay.innerHTML += this.innerHTML;
+			}
 		})
 	} 			
 
