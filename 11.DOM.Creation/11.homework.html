@@ -4,12 +4,42 @@
 	    <title>11. Document Object Model - Creation - Homework</title>
 	    <link rel="stylesheet" type="text/css" href="css/styles.css">
 	</head>
-	<body onload="createCalculator()">
-		<h1>Web Calculator 1</h1>
+	<body>
+		<h1>Web Calculator 1</h1>	
 		
 		<script type="text/javascript" src="../helpers.js"></script>
 		<script type="text/javascript" src="../DOM_api.js"></script>
 		<script type="text/javascript" src="web.calculator.js"></script>
+		<script type="text/javascript">
+
+		window.onload = function () {
+
+			createCalculator();
+			detectClick();
+
+		};
+
+		function detectClick() {
+
+						
+			var allCalcButtons = document.getElementsByClassName( 'button' );
+			var allArray       = [].slice.call( allCalcButtons );
+			var calcDisplay    = document.querySelector( '.display' );
+				
+
+			for ( var i = 0, l = allCalcButtons.length; i < l; i += 1 ) {
+				allArray[ i ] = allCalcButtons[ i ];
+			}
+
+			for ( var i = 0, l = allArray.length; i < l; i += 1 ) {
+				allArray[ i ].addEventListener( 'click', function() {
+					calcDisplay.innerHTML += this.innerHTML;
+				})
+			} 			
+
+		}		
+			
+		</script>
 		
 	</body>
 </html>

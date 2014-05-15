@@ -75,7 +75,7 @@
 					break;
 			}
 			allButtons.push( button ); // add every created button to the array
-			console.log( allButtons );
+			//console.log( allButtons );
 			calcFragment.appendChild( button ); // add all buttons to the Fragment
 			
 

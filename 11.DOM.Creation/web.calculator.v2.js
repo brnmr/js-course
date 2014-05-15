@@ -63,3 +63,26 @@
 		// inject the Calculator's container to the body
 		document.body.inject( document.querySelector( 'body' ), 'bottom', calcContainer );	
 }
+
+/* 
+ * Function that detects which button is clicked and adds its value to the display
+ */
+
+function detectClick() {
+						
+	var allCalcButtons = document.getElementsByClassName( 'button' );
+	var allArray       = [].slice.call( allCalcButtons );
+	var calcDisplay    = document.querySelector( '.display' );
+		
+
+	for ( var i = 0, l = allCalcButtons.length; i < l; i += 1 ) {
+		allArray[ i ] = allCalcButtons[ i ];
+	}
+
+	for ( var i = 0, l = allArray.length; i < l; i += 1 ) {
+		allArray[ i ].addEventListener( 'click', function() {
+			calcDisplay.innerHTML += this.innerHTML;
+		})
+	} 			
+
+}	

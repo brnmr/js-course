@@ -4,7 +4,7 @@
 	    <title>11. Document Object Model - Creation - Homework</title>
 	    <link rel="stylesheet" type="text/css" href="css/styles.css">
 	</head>
-	<body onload="createCalculator2()">
+	<body>
 		<h1>Web Calculator 2</h1>
 		<div id="calc2" style="width: 360px; height: 600px;">
 			
@@ -12,6 +12,15 @@
 		<script type="text/javascript" src="../helpers.js"></script>
 		<script type="text/javascript" src="../DOM_api.js"></script>
 		<script type="text/javascript" src="web.calculator.v2.js"></script>
-		
+		<script type="text/javascript">
+
+		window.onload = function () {
+
+			createCalculator2(); // create calculator's ui
+			detectClick(); // add event listeners to the buttons
+
+		};
+
+		</script>
 	</body>
 </html>
