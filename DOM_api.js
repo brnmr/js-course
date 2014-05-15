@@ -1,33 +1,33 @@
 !window.HTMLElement && (HTMLElement = Element); // IE8
 
-/**
-* @function getElemsByTag
-*
-* Returns all matched elements by their tag name
-*
-* @param tag {String} tag name, default '*'
-* @param ancestor {Element} element, default `document`
-*
-* @returns {Array} Elements collection
+/** 
+ * @function getElemsByTag
+ * 
+ * Returns all matched elements by their tag name
+ *
+ * @param ancestor   {Element}   element, default `document`
+ * @param tag        {String}    tag name, default '*'
+ *
+ * @returns          {Array}     Elements collection
 **/
-function getElemsByTag( tag, ancestor ) {
-   tag = tag || '*'; // get all elements by default
-   ancestor = ancestor || document;
+function getElemsByTag( ancestor, tag ) {
+   tag      = tag       || '*';  // get all elements by default
+   ancestor = ancestor  || document;
    return toArray( ancestor.getElementsByTagName( tag ) );
 }
 
-/**
-* @function getElemsByClass
-*
-* Returns all matched elements having class name(s)
-*
-* @param name {String} class name(s)
-* @param ancestor {Element} element, default `document`
-*
-* @returns {Array} Elements collection
+/** 
+ * @function getElemsByClass
+ * 
+ * Returns all matched elements having class name(s)
+ *
+ * @param ancestor   {Element}   element, default `document`
+ * @param name       {String}    class name(s)
+ *
+ * @returns          {Array}     Elements collection
 **/
-function getElemsByClass( name, ancestor ) {
-   ancestor = ancestor || document;
+function getElemsByClass( ancestor, name ) {
+   ancestor = ancestor  || document;
    if ( ancestor.getElementsByClassName ) {
       // API natively supported
       return [].slice.call( ancestor.getElementsByClassName( name ) );
@@ -37,14 +37,14 @@ function getElemsByClass( name, ancestor ) {
    });
 }
 
-/**
-* @function getPrevious
-*
-* Returns previous sibling, ignoring white space
-*
-* @param elem {HTMLElement} The element whose previous sibling we want to get
-*
-* @returns {HTMLElement}
+/** 
+ * @function getPrevious
+ * 
+ * Returns previous sibling, ignoring white space
+ *
+ * @param elem {HTMLElement}  The element whose previous sibling we want to get
+ *
+ * @returns {HTMLElement}
 **/
 function getPrevious( elem ) {
    do {
@@ -53,14 +53,14 @@ function getPrevious( elem ) {
    return elem;
 }
 
-/**
-* @function getNext
-*
-* Returns next sibling, ignoring white space
-*
-* @param elem {HTMLElement} The element whose next sibling we want to get
-*
-* @returns {HTMLElement}
+/** 
+ * @function getNext
+ * 
+ * Returns next sibling, ignoring white space
+ *
+ * @param elem {HTMLElement}  The element whose next sibling we want to get
+ *
+ * @returns {HTMLElement}
 **/
 function getNext( elem ) {
    do {
@@ -69,14 +69,14 @@ function getNext( elem ) {
    return elem;
 }
 
-/**
-* @function getChildren
-*
-* Returns element's children, ignoring white space
-*
-* @param elem {HTMLElement} The element whose children (HTML elements) we want to get
-*
-* @returns {Array}
+/** 
+ * @function getChildren
+ * 
+ * Returns element's children, ignoring white space
+ *
+ * @param elem {HTMLElement}  The element whose children (HTML elements) we want to get
+ *
+ * @returns {Array}
 **/
 function getChildren( elem ) {
    var children = [].slice.call( elem.childNodes );
@@ -85,7 +85,7 @@ function getChildren( elem ) {
    });
 }
 
-function getStyle( name, elem ) {
+function getStyle( elem, name ) {
    switch ( name ) {
    case 'opacity':
       if ( typeof( elem.style.opacity ) == 'undefined' ) {
@@ -113,7 +113,7 @@ function getStyle( name, elem ) {
    }
 }
 
-function setStyle( name, value, elem ) {
+function setStyle( elem, name, value ) {
    switch ( name ) {
    case 'opacity':
       if ( typeof( elem.style.opacity ) == 'undefined' ) {
@@ -126,16 +126,16 @@ function setStyle( name, value, elem ) {
    }
 }
 
-/**
-* @function inject
-*
-* Injects element related to another element in the DOM
-*
-* @param relative {HTMLElement} The element relative to which we want to place our element
-* @param where {String} The position related to the relative element, default "bottom"
-* @param elem {HTMLElement} The element we want to inject
+/** 
+ * @function inject
+ * 
+ * Injects element related to another element in the DOM
+ *
+ * @param elem       {HTMLElement}  The element we want to inject
+ * @param relative   {HTMLElement}  The element relative to which we want to place our element
+ * @param where      {String}       The position related to the relative element, default "bottom"
 **/
-function inject( relative, where, elem ) {
+function inject( elem, relative, where ) {
    if ( ! elem || ! relative ) {
       throw new Error('`inject` requires `elem` and `relative` params');
    }
@@ -164,7 +164,7 @@ function inject( relative, where, elem ) {
    case 'after':
       var next_sibling = getNext( relative );
       if ( next_sibling ) {
-         inject( next_sibling, 'before', elem );
+         inject( elem, next_sibling, 'before' );
       } else if ( relative.parentNode ) {
          // appendChild will do here
          relative.parentNode.appendChild( elem );
@@ -174,36 +174,36 @@ function inject( relative, where, elem ) {
    }
 }
 
-/**
-* @function grab
-*
-* Adopts given element
-*
-* @param child {HTMLElement} The element we want to adopt
-* @param where {String} The position we want to inject the child, default "bottom"
-* @param elem {HTMLElement} The parent element
+/** 
+ * @function grab
+ * 
+ * Adopts given element
+ *
+ * @param elem    {HTMLElement}  The parent element
+ * @param child   {HTMLElement}  The element we want to adopt
+ * @param where   {String}       The position we want to inject the child, default "bottom"
 **/
-function grab( child, where, elem ) {
+function grab( elem, child, where ) {
    if ( ['top', 'bottom'].indexOf( where ) < 0 ) {
       where = 'bottom';
    }
-   inject( elem, where, child );
+   inject( child, elem, where );
 }
 
-/**
-* @function wrap
-*
-* Injects element next to a specified element and then adopts that element
-*
-* @param child {HTMLElement} The element we want to adopt
-* @param where {String} The position we want to inject the child, default "bottom"
-* @param elem {HTMLElement} The parent element
+/** 
+ * @function wrap
+ * 
+ * Injects element next to a specified element and then adopts that element
+ *
+ * @param elem    {HTMLElement}  The parent element
+ * @param child   {HTMLElement}  The element we want to adopt
+ * @param where   {String}       The position we want to inject the child, default "bottom"
 **/
-function wrap( child, where, elem ) {
+function wrap( elem, child, where ) {
    // first `inject` the `elem` next to the `child`
-   inject( child, 'before', elem );
+   inject( elem, child, 'before' );
    // then grab the `child`
-   grab( child, where, elem );
+   grab( elem, child, where );
 }
 
 // Adding these methods to HTMLElement.prototype
@@ -221,7 +221,7 @@ function wrap( child, where, elem ) {
 ].forEach( function ( fn ) {
    HTMLElement.prototype[ fn ] = function () {
       var args = [].slice.call( arguments );
-      args.push( this );
+      args.unshift( this );
       return window[ fn ].apply( null, args );
    }
 });
@@ -229,11 +229,11 @@ function wrap( child, where, elem ) {
 /*--------------------------------------------------------------- MISSING API */
 
 /**
-* HTMLElement.prototype.remove
-*
-* Removes an element from DOM
-*
-* @returns {HTMLElement}
+ * HTMLElement.prototype.remove
+ *
+ * Removes an element from DOM
+ *
+ * @returns {HTMLElement}
 **/
 ! HTMLElement.prototype.remove && (HTMLElement.prototype.remove = function () {
    this.removeNode( true );
@@ -241,9 +241,9 @@ function wrap( child, where, elem ) {
 });
 
 /**
-* HTMLElement.classList
-*
-* Define classList object that manages class names
+ * HTMLElement.classList
+ *
+ * Define classList object that manages class names
 **/
 Object.defineProperty( HTMLElement.prototype, 'classList', {
    enumerable : false,
@@ -270,7 +270,7 @@ Object.defineProperty( HTMLElement.prototype, 'classList', {
                   list.push( arguments[i] );
                }
             }
-            update(); // we have to update the `className` of the element
+            update();   // we have to update the `className` of the element
          },
          
          remove : function () {
@@ -281,7 +281,7 @@ Object.defineProperty( HTMLElement.prototype, 'classList', {
                   list.splice( index, 1 );
                }
             }
-            update(); // we have to update the `className` of the element
+            update();   // we have to update the `className` of the element
          },
          
          toggle : function ( item ) {
@@ -311,10 +311,10 @@ Object.defineProperty( HTMLElement.prototype, 'classList', {
       // a class name has been added/removed from the `classList`.
       var update = function ( list, classList ) {
          // convert the array with class names into a string
-         this.className = list.join(' ');
+         this.className    = list.join(' ');
          // update `length` property
-         classList.length = list.length;
-      }.bind( this, list, classList ); // `this` is our HTMLElement
+         classList.length  = list.length;
+      }.bind( this, list, classList );   // `this` is our HTMLElement
       
       return classList;
    }
