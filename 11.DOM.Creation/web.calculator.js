@@ -81,12 +81,6 @@
 
 		}
 
-		// Add event handlers to all buttons
-		//for ( var i = 0, l = allButtons.length; i < l, i += 1) {
-
-		//}
-
-
 		calc.setAttribute( 'class', 'calculator' );
 		calcDisplay.setAttribute( 'class', 'display' );					
 		calc.appendChild( calcFragment ); //
@@ -96,14 +90,5 @@
 
 	}
 
-
-	
-
-	function getButtonValue() {
-		var clicked = document.querySelector( '.button' )
-		var val = clicked.innerHTML;
-		console.log( val );
-		//return val;
-	}
 
 	
