@@ -44,9 +44,13 @@
 				var htmlEl = document.createElement( 'div' );
 				htmlEl.innerHTML = actions[ property ];								
 				htmlEl.setAttribute( 'class', 'button action' );
+				if ( htmlEl.innerHTML == '=') {
+					htmlEl.setAttribute( 'class', 'equalizer' );
+				};				
 				calcFragmentWrap.appendChild( htmlEl );
 				
 			}
+			
 		}
 
 		// create all Number's buttons and add them to the Fragment
@@ -62,7 +66,7 @@
 		// Append the Fragment with all Calculator's components to Calculator's container
 		calcContainer.appendChild( calcFragmentWrap );
 		// inject the Calculator's container to the body
-		document.body.inject( calcContainer, document.querySelector( 'body' ), 'bottom' );	
+		document.body.inject( document.querySelector( 'body' ), 'bottom', calcContainer );	
 }
 
 /* 
@@ -92,4 +96,38 @@ function detectClick() {
 		})
 	} 			
 
-}	
+};
+
+/*
+* Function for calculating and displaying the result
+*/	 
+
+function calculateResult() {
+	var display = document.querySelector( '.display' );
+	var equalizer = document.querySelector( '.equalizer' );
+	
+	equalizer.addEventListener( 'click', function() {
+		// check for incorrect syntax
+		try {
+			var validation = display.innerHTML;
+
+			if ( validation.indexOf( '//' ) > 0 || validation.indexOf( '**' ) > 0 || validation.indexOf( '--' ) > 0 || validation.indexOf( '++' ) > 0
+				|| validation.indexOf( '/*' ) > 0 || validation.indexOf( '*/' ) > 0 || validation.indexOf( '*+' ) > 0 || validation.indexOf( '+*' ) > 0 || validation.indexOf( '*-' ) > 0
+				|| validation.indexOf( '-*' ) > 0 || validation.indexOf( '/+' ) > 0 || validation.indexOf( '+/' ) > 0 || validation.indexOf( '/-' ) > 0 || validation.indexOf( '-/' ) > 0
+				|| validation.indexOf( '+-' ) > 0 || validation.indexOf( '-+' ) > 0 
+				) 
+			{
+				throw 'Invalid syntax';
+			}				
+		}			
+		catch ( error ) {
+			var displayErr = document.querySelector( '.display' );	
+		    displayErr.innerHTML += ' (Error: ' + error + ')';
+		}
+		finally {
+			display.innerHTML = eval( display.innerHTML );
+		}
+	});
+};
+
+

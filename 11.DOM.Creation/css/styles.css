@@ -23,7 +23,7 @@ h1 {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#007db9e8', endColorstr='#a3dae0',GradientType=0 ); /* IE6-9 */
 
 }
-.button {
+.button, .equalizer {
 	border: 1px solid #4c4c4c;
 	padding: 10px;
 	background-color: #c6c6c6;
@@ -39,9 +39,10 @@ h1 {
 .button.equalize {
 	width: 112px;
 }
-.button.action {
+.button.action, .equalizer {
 	background-color: orange;
 }
+
 .display {
 	border: 1px solid #4c4c4c;
 	background-color: #ffffff;
