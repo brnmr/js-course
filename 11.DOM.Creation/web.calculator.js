@@ -1,5 +1,6 @@
 
 	/* 
+	 * Web Calculator v.1
 	 * Create a function which will create a web based calculator with basic functionality.
 	 * The function will be called when the body is loaded (onload)
 	*/
