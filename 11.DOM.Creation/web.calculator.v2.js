@@ -107,25 +107,18 @@ function calculateResult() {
 	var equalizer = document.querySelector( '.equalizer' );
 	
 	equalizer.addEventListener( 'click', function() {
-		// check for incorrect syntax
-		try {
-			var validation = display.innerHTML;
-
-			if ( validation.indexOf( '//' ) > 0 || validation.indexOf( '**' ) > 0 || validation.indexOf( '--' ) > 0 || validation.indexOf( '++' ) > 0
+		var validation = display.innerHTML;
+		//validation
+		if ( validation.indexOf( '//' ) > 0 || validation.indexOf( '**' ) > 0 || validation.indexOf( '--' ) > 0 || validation.indexOf( '++' ) > 0
 				|| validation.indexOf( '/*' ) > 0 || validation.indexOf( '*/' ) > 0 || validation.indexOf( '*+' ) > 0 || validation.indexOf( '+*' ) > 0 || validation.indexOf( '*-' ) > 0
 				|| validation.indexOf( '-*' ) > 0 || validation.indexOf( '/+' ) > 0 || validation.indexOf( '+/' ) > 0 || validation.indexOf( '/-' ) > 0 || validation.indexOf( '-/' ) > 0
 				|| validation.indexOf( '+-' ) > 0 || validation.indexOf( '-+' ) > 0 
-				) 
-			{
-				throw 'Invalid syntax';
-			}				
-		}			
-		catch ( error ) {
-			var displayErr = document.querySelector( '.display' );	
-		    displayErr.innerHTML += ' (Error: ' + error + ')';
-		}
-		finally {
-			display.innerHTML = eval( display.innerHTML );
+				) 	
+		{
+			display.innerHTML += ' <span style="color: red;">(Invalid Syntax)</span>';
+			return;
+		} else {
+			display.innerHTML = eval( display.innerHTML );	
 		}
 	});
 };
