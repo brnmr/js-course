@@ -66,7 +66,7 @@
 		// Append the Fragment with all Calculator's components to Calculator's container
 		calcContainer.appendChild( calcFragmentWrap );
 		// inject the Calculator's container to the body
-		document.body.inject( document.querySelector( 'body' ), 'bottom', calcContainer );	
+		calcContainer.inject( document.body, 'bottom' );	
 }
 
 /* 
@@ -79,7 +79,7 @@ function detectClick() {
 	var allArray       = [].slice.call( allCalcButtons );
 	var calcDisplay    = document.querySelector( '.display' );
 		
-
+	
 	for ( var i = 0, l = allCalcButtons.length; i < l; i += 1 ) {
 		allArray[ i ] = allCalcButtons[ i ];
 	}

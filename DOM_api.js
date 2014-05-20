@@ -5,12 +5,12 @@
  * 
  * Returns all matched elements by their tag name
  *
- * @param tag        {String}    tag name, default '*'
  * @param ancestor   {Element}   element, default `document`
+ * @param tag        {String}    tag name, default '*'
  *
  * @returns          {Array}     Elements collection
 **/
-function getElemsByTag( tag, ancestor ) {
+function getElemsByTag( ancestor, tag ) {
    tag      = tag       || '*';  // get all elements by default
    ancestor = ancestor  || document;
    return toArray( ancestor.getElementsByTagName( tag ) );
@@ -21,12 +21,12 @@ function getElemsByTag( tag, ancestor ) {
  * 
  * Returns all matched elements having class name(s)
  *
- * @param name       {String}    class name(s)
  * @param ancestor   {Element}   element, default `document`
+ * @param name       {String}    class name(s)
  *
  * @returns          {Array}     Elements collection
 **/
-function getElemsByClass( name, ancestor ) {
+function getElemsByClass( ancestor, name ) {
    ancestor = ancestor  || document;
    if ( ancestor.getElementsByClassName ) {
       // API natively supported
@@ -85,7 +85,7 @@ function getChildren( elem ) {
    });
 }
 
-function getStyle( name, elem ) {
+function getStyle( elem, name ) {
    switch ( name ) {
    case 'opacity':
       if ( typeof( elem.style.opacity ) == 'undefined' ) {
@@ -113,7 +113,7 @@ function getStyle( name, elem ) {
    }
 }
 
-function setStyle( name, value, elem ) {
+function setStyle( elem, name, value ) {
    switch ( name ) {
    case 'opacity':
       if ( typeof( elem.style.opacity ) == 'undefined' ) {
@@ -131,11 +131,11 @@ function setStyle( name, value, elem ) {
  * 
  * Injects element related to another element in the DOM
  *
+ * @param elem       {HTMLElement}  The element we want to inject
  * @param relative   {HTMLElement}  The element relative to which we want to place our element
  * @param where      {String}       The position related to the relative element, default "bottom"
- * @param elem       {HTMLElement}  The element we want to inject
 **/
-function inject( relative, where, elem ) {
+function inject( elem, relative, where ) {
    if ( ! elem || ! relative ) {
       throw new Error('`inject` requires `elem` and `relative` params');
    }
@@ -162,9 +162,9 @@ function inject( relative, where, elem ) {
       parent_node.insertBefore( elem, relative );
       break;
    case 'after':
-      var next_sibling = elem.getNext( relative );
+      var next_sibling = getNext( relative );
       if ( next_sibling ) {
-         inject( next_sibling, 'before', elem );
+         inject( elem, next_sibling, 'before' );
       } else if ( relative.parentNode ) {
          // appendChild will do here
          relative.parentNode.appendChild( elem );
@@ -179,15 +179,15 @@ function inject( relative, where, elem ) {
  * 
  * Adopts given element
  *
+ * @param elem    {HTMLElement}  The parent element
  * @param child   {HTMLElement}  The element we want to adopt
  * @param where   {String}       The position we want to inject the child, default "bottom"
- * @param elem    {HTMLElement}  The parent element
 **/
-function grab( child, where, elem ) {
+function grab( elem, child, where ) {
    if ( ['top', 'bottom'].indexOf( where ) < 0 ) {
       where = 'bottom';
    }
-   inject( elem, where, child );
+   inject( child, elem, where );
 }
 
 /** 
@@ -195,15 +195,15 @@ function grab( child, where, elem ) {
  * 
  * Injects element next to a specified element and then adopts that element
  *
+ * @param elem    {HTMLElement}  The parent element
  * @param child   {HTMLElement}  The element we want to adopt
  * @param where   {String}       The position we want to inject the child, default "bottom"
- * @param elem    {HTMLElement}  The parent element
 **/
-function wrap( child, where, elem ) {
+function wrap( elem, child, where ) {
    // first `inject` the `elem` next to the `child`
-   inject( child, 'before', elem );
+   inject( elem, child, 'before' );
    // then grab the `child`
-   grab( child, where, elem );
+   grab( elem, child, where );
 }
 
 // Adding these methods to HTMLElement.prototype
@@ -221,7 +221,7 @@ function wrap( child, where, elem ) {
 ].forEach( function ( fn ) {
    HTMLElement.prototype[ fn ] = function () {
       var args = [].slice.call( arguments );
-      args.push( this );
+      args.unshift( this );
       return window[ fn ].apply( null, args );
    }
 });
