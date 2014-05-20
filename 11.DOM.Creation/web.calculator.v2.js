@@ -117,9 +117,10 @@ function calculateResult() {
 		{
 			display.innerHTML += ' <span style="color: red;">(Invalid Syntax)</span>';
 			return;
-		} else {
-			display.innerHTML = eval( display.innerHTML );	
 		}
+		 
+		display.innerHTML = eval( display.innerHTML );	
+		
 	});
 };
 
