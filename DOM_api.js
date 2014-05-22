@@ -85,16 +85,27 @@ function getChildren( elem ) {
    });
 }
 
+/** 
+ * @function getStyle
+ * 
+ * Returns style property (standardised) of an element
+ *
+ * @param elem {HTMLElement}  The element whose style property we want
+ * @param name {String}       The CSS property
+ *
+ * @returns {Mixed}
+**/
 function getStyle( elem, name ) {
    switch ( name ) {
    case 'opacity':
-      if ( typeof( elem.style.opacity ) == 'undefined' ) {
+      if ( typeof( getComputedCSSProperty( elem, 'opacity' ) ) == 'undefined' ) {
          // Older IE
-         return Number( (elem.style.filter.substring( 14, elem.style.filter.indexOf(')') ) / 100).toFixed(1) );
+         var filter = getComputedCSSProperty( elem, 'filter' );
+         return Number( (filter.substring( 14, filter.indexOf(')') ) / 100).toFixed(1) );
       }
    case 'color':
    case 'background-color':
-      return rgbToHex( colorToHex( elem.style[ name ] ) );
+      return rgbToHex( colorToHex( getComputedCSSProperty( elem, name ) ) );
    case 'border':
       return (function ( value ) {
          // split width, style and color
@@ -107,12 +118,21 @@ function getStyle( elem, name ) {
          // IE8 returns "color width style"
          // Make sure all browsers return the same
          return parts.sort().concat( parts.shift() ).join(' ');
-      })( elem.style[ name ] );
+      })( getComputedCSSProperty( elem, name ) );
    default:
-      return elem.style[ name ];
+      return getComputedCSSProperty( elem, name );
    }
 }
 
+/** 
+ * @function setStyle
+ * 
+ * Sets inline style property to element
+ *
+ * @param elem    {HTMLElement}  The element whose style property we want to set
+ * @param name    {String}       The CSS property
+ * @param value   {Mixed}        The CSS value
+**/
 function setStyle( elem, name, value ) {
    switch ( name ) {
    case 'opacity':
@@ -123,6 +143,65 @@ function setStyle( elem, name, value ) {
       }
    default:
       elem.style[ name ] = value;
+   }
+}
+
+/** 
+ * @function getComputedCSSProperty
+ * 
+ * Returns style property (computed) of an element
+ *
+ * @param elem {HTMLElement}  The element whose style property we want
+ * @param name {String}       The CSS property
+ *
+ * @returns {String}
+**/
+function getComputedCSSProperty( elem, name ) {
+   if ( window.getComputedStyle ) {
+      // modern browsers
+      return getComputedStyle( elem ).getPropertyValue( toDashes( name ) );
+   }
+   if ( elem.currentStyle ) {
+      // legacy IE
+      return elem.currentStyle[ toCamelCase( name ) ];
+   }
+   // fallback - return inline style
+   return elem.style[ toCamelCase( name ) ];
+}
+
+/** 
+ * @function getCSS
+ * 
+ * Returns CSS text of a <style> element
+ *
+ * @param elem {HTMLElement}  The <style> element whose CSS we want to get
+ *
+ * @returns {String}
+**/
+function getCSS( elem ) {
+   if ( ! elem || elem.tagName !== 'STYLE' ) {
+      return '';
+   }
+   return elem.styleSheet ? elem.styleSheet.cssText /* IE */ : elem.innerHTML;
+}
+
+/** 
+ * @function setCSS
+ * 
+ * Sets CSS text to a <style> element
+ *
+ * @param elem {HTMLElement}  The <style> element whose CSS we want to set
+ * @param css  {String}       The CSS text we want to set
+**/
+function setCSS( elem, css ) {
+   if ( ! elem || elem.tagName !== 'STYLE' ) {
+      return;
+   }
+   
+   if ( elem.styleSheet ) {
+      elem.styleSheet.cssText = css;   // IE
+   } else {
+      elem.innerHTML = css;            // Other
    }
 }
 
@@ -215,9 +294,12 @@ function wrap( elem, child, where ) {
    'getChildren',
    'getStyle',
    'setStyle',
+   'getComputedCSSProperty',
    'inject',
    'grab',
-   'wrap'
+   'wrap',
+   'getCSS',
+   'setCSS'
 ].forEach( function ( fn ) {
    HTMLElement.prototype[ fn ] = function () {
       var args = [].slice.call( arguments );
@@ -318,4 +400,38 @@ Object.defineProperty( HTMLElement.prototype, 'classList', {
       
       return classList;
    }
+});
+
+/**
+ * CSSStyleSheet.prototype.insertRule
+ *
+ * Creates new CSS rule ( selector { cssprop: cssvalue } )
+ *
+ * @param rule {String} The CSS rule to insert
+ *
+ * @returns {Number} The new rule's index
+**/
+! CSSStyleSheet.prototype.insertRule && (CSSStyleSheet.prototype.insertRule = function ( rule ) {
+   if ( this.addRule ) {
+      // extract the selector
+      var selector   = rule.substring( 0, rule.indexOf('{') );
+      // now extraxt the selector body
+      var style      = rule.substring( rule.indexOf('{') + 1, rule.lastIndexOf('}') );
+      // insert the rule!
+      return this.addRule( selector, style );
+   }
+   return -1;
+});
+
+/**
+ * CSSStyleSheet.prototype.deleteRule
+ *
+ * Removes a CSS rule from a stylesheet by specified index
+ *
+ * @param index {Number} The CSS rule's index
+ *
+ * @returns {Boolean}
+**/
+! CSSStyleSheet.prototype.deleteRule && (CSSStyleSheet.prototype.deleteRule = function ( index ) {
+   return this.removeRule ? this.removeRule( index ) : false;
 });
