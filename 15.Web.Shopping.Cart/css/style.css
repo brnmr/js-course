@@ -1,0 +1,65 @@
+/**CSS style sheet Homework 15**/
+
+body {
+   margin: 0;
+   padding: 10px 20px;
+   font-family: Helvetica, Arial, sans-serif;
+   color: #333;
+   background: #999;
+}
+
+button {
+   padding: 5px 10px;
+   font: bold 16px/20px Helvetica, Arial, sans-serif;
+   color: white;
+   background: #f90;
+   border-top: 1px solid #ffd089;
+   border-right: 1px solid #9b5d00;
+   border-bottom: 1px solid #9b5d00;
+   border-left: 1px solid #ffd089;
+   border-radius: 8px;
+   cursor: pointer;
+}
+
+.product {
+   margin: 10px 0;
+   padding: 5px 10px;
+   background: white;
+   overflow: hidden;
+}
+
+.product img {
+   float: left;
+   width: 200px;
+   margin-right: 25px;
+}
+
+.overlay {
+   position: absolute;
+   left: 0;
+   right: 0;
+   top: 0;
+   bottom: 0;
+   background: black;
+   opacity: .4;
+}
+
+.shopping-cart {
+   position: fixed;
+   left: 5%;
+   right: 5%;
+   top: 5%;
+   bottom: 5%;
+   padding: 20px 30px;
+   background: white;
+}
+
+.close {
+   position: absolute;
+   right: 5px;
+   top: 5px;
+   padding: 2px;
+   text-decoration: none;
+   color: white;
+   background: black;
+}
