@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>06. Object Oriented Programming - JavaScript</title>
+    <script src="../helpers.js"></script>
+</head>
+<body>
+    <div id="main">asd</div>
+    <script type="text/javascript">
+    var myArray = [ 'one', 'two', 'three' ];
+    var myObj = {
+        prop1 : 'property one',
+        prop2 : 'property two'
+    };
+
+    var jsonArray = JSON.stringify( myArray );
+    var jsonObj = JSON.stringify( myObj )
+    // JSON stringify
+    console.log( jsonArray ); // output: ["one","two","three"] 
+    console.log( jsonObj ); // output: {"prop1":"property one","prop2":"property two"}
+
+    // JSON Parse
+    var jsonArrayParse = JSON.parse( jsonArray );
+    var jsonObjParse = JSON.parse( jsonObj );
+
+    console.log( jsonArrayParse ); // output: ["one", "two", "three"] 
+    console.log( jsonObjParse ); // output: Object {prop1: "property one", prop2: "property two"} 
+
+    // XMLHttpRequest
+    var xhr = new XMLHttpRequest(); // Step 1: here we create the object with the constructor
+    // Step 2: @params: method (GET / POST), url, async (true / false)
+    xhr.open( 'GET', 'http://dmb-team.com/assets/jokes.xml', true );
+    // Step 3: handle the response via events
+    xhr.onload = function( e ) {
+        // printe the result of the response
+        console.log( this.responseText );
+    };
+    // Step 4: send the XMLHttpRequest
+    xhr.send();
+
+    </script>
+</body>
+</html>

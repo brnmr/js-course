@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>06. Object Oriented Programming - JavaScript</title>
+    <script src="../helpers.js"></script>
+</head>
+<body>
+    <div id="main">Div with ID Main</div>
+    <div id="click">Div with ID Click</div>
+    <script type="text/javascript">
+
+    // Example of Multiple Variables Referring to a Single Object
+
+    // Set obj to an empty object
+    var obj = new Object();
+
+    // objRef now refers to the other object
+    var objRef = obj;
+
+    // modify a property in the original object
+    obj.oneProperty = true;
+
+    // we now see that that change is represented in both variables
+    // (Since they both refer to the same object)
+    console.log( obj.oneProperty === objRef.oneProperty ); // logs true
+
+    // Create an Array of times
+    var items = new Array( 'one', 'two', 'three' );
+
+    // Create a Reference to the above created array
+    var itemsRef = items;
+
+    // Add new item to the original array
+    items.push( 'four' );
+
+    // Let's check the length property of each array
+    console.log( 'items: ' + items.length, 'itemsRef: ' + itemsRef.length ); // logs 4. 4
+    console.log( items.length == itemsRef.length ); // logs true
+
+    /* Changing the Reference of an Object While Maintaining Integrity */
+    var item0    = new Array( '1', '2', '3' );
+    var item0Ref = item0;
+   
+   // Set item0 to equal new object
+    item0 = new Array ( 'new', 'Array' );
+
+    // Let's check now what is the reference of item0 and item0Ref
+    console.log( 'item0: ' + item0 ); // logs new, Array
+    console.log( 'itemRef: ' + item0Ref ); // logs 1,2,3
+
+    /* Example of Object Modification Resulting in a New Object, not a self-modified object */
+    // set item1 equal to a new string object
+    var item1 = 'test';
+
+    // item1Ref now refers to the same string object
+    var item1Ref = item1;
+
+    //Concatenate some new text onto the string object
+    // NOTE: this creates a new oject, and does not modify the original object
+    item1 += 'ing';
+
+    // Let's check the item1 and item1Ref
+    console.log( 'item1: ' + item1 );
+    console.log( 'item1Ref: ' + item1Ref );
+
+    /* 
+        Two examples of Function Overloading in JavaScript
+    */
+    // Simple function for sending a message
+    function sendMessage( msg, obj ) {
+        // if both arguments are provided
+        if ( arguments.length == 2 ) {
+            //send the message to the object
+            obj.handleMsg ( msg );
+        }
+        // otherwise assume that only a message was provided
+        console.log( msg );
+    }
+
+    // Let's call the function with one argument
+    sendMessage( 'Hello, World!' );
+
+    // Let's call the function with two arguments
+    sendMessage( 'How Are You?', {
+        handleMsg: function( msg ) {
+            console.log( 'This is custom message: ' + msg );
+        }
+    });
+
+    // A function that takes any number of arguments and makes an array of them
+    function makeArray() {
+        var arr = [];
+
+        for ( var i=0, j = arguments.length; i < j;  i += 1 ) {
+            arr.push( arguments[ i ] );
+        }
+
+        return arr; // return the created array of all arguments
+    };
+
+    /*
+        Display an Error Message if an argument is not provided
+    */
+
+    function displayError ( msg ) {
+        // check if msg is provided
+        if ( typeof msg == 'undefined' ) {
+            msg = 'Error: Missing Argument'; 
+        }
+        return msg; // return the msg
+    };
+
+    /* 
+        Function that returns the correct constructor of the argument
+    */
+
+    function returnConstructor( arg ) {
+
+        if ( typeof arg == 'undefined' ) {
+            arg = 'undefined'           
+        }
+
+        switch ( true ) {
+                case arg == 'undefined' :
+                    return 'undefined';
+                case arg.constructor == Object :
+                    return 'Object';
+                case arg.constructor == String :
+                    return 'String';
+                case arg.constructor == Number :
+                    return 'Number';
+                case arg.constructor == Array :
+                    return 'Array';
+                case arg.constructor == Function :
+                    return 'Function';
+                case arg.constructor == Date :
+                    return 'Date';
+                case arg.constructor == Boolean :
+                    return 'Boolean';
+            }
+        
+    }
+
+    /* 
+     * Two examples of How Closures Can Improve the Clarity of Your Code
+    */
+
+    // Find the element with an ID of 'main'
+    var objDiv = document.getElementById( 'main' );
+
+    // Change it's border styling
+    objDiv.style.border = '1px solid red';
+
+    // Initialize a callback that will occur in one seccond
+    setTimeout( function() {
+        // Which will hide the object
+        objDiv.style.visibility = 'hidden';
+    }, 1000 );
+
+    // A Generic function for displaying a delayed alert message
+    function delayedAlertMsg( dmsg, dtime ) {
+        setTimeout( function() {
+            console.log( 'message delay 2 sec: ' + dmsg );
+        }, dtime );
+    };
+
+    // call the delayedAlertMsg with two arguments
+    delayedAlertMsg( 'Welcome!', 2000 );
+
+    /*
+     * Example of Function Currying Using Closures
+     */
+     // A function that generates a new function for adding numbers
+     function addGenerator( num ) {
+        // return a simple function for adding two numbers
+        // with the first number borrowed from the generator
+        return function( toAdd ) {
+            return num + toAdd;
+        } 
+     };
+
+     // addFive now contains a function that takes one argument,
+     // adds five to it, and returns the resulting number
+     var addFive = addGenerator( 5 );
+     // call addFive with argument 3
+     console.log( addFive( 3 ) ); // returns 8
+
+     /*
+      * Example of Using Anonymous Functions to Hide Variables from the Global Scope
+      */
+      // global msg variable
+      var msg = 'Global msg variable';
+      // Create a new anonymous function, to use as a wrapper
+      ( function() {
+            // the variable that would, normally, be global
+            var msg = 'Thanks for visiting';
+
+            // Binding a new function to a global object
+            window.onload = function(){
+                // Which uses the 'hidden' variable
+                console.log( 'Anonymous msg variabl: ' + msg );
+            };
+      // Close off the anonymous function and execute
+      } )();
+
+      /*
+      * Example of Using Anonymous Functions to Induce the Scope Needed to Create 
+      * Multiple Closure-Using Functions
+      */
+      var objClosure = document.getElementById( 'click' );
+
+      // An array of items to bind to
+      var itemsClosure = [ 'click', 'mouseover', 'mouseleave' ];
+
+      // Iterate through each of the items
+      for ( var i = 0, l = itemsClosure.length; i < l; i += 1 ) {
+        // Use a self-executed anonymous function to induce scope
+        ( function() {
+            var item = itemsClosure[ i ];
+
+            // Bind a function to the element
+            objClosure[ 'on' + item ] = function() {
+                // item refers to a parent variable that has been successfully
+                // scoped within the context of this for loop
+                console.log( 'Thanks for your: ' + item );
+            };
+        } )();
+      }
+
+      /*
+       * Examples of Changing the Context of Functions
+       */
+
+       // A simple function that sets the color of its context
+       function changeBgColor( color ) {
+            this.style.backgroundColor = color;
+       };
+
+       // Another function for the body bg
+       function setBodyColor() {
+            changeBgColor.apply( document.body, arguments );
+       }
+
+       // if we call the changeColor function directly we will get error,
+       // because the cotnext is window and window doesnt have style property
+       // So we have to change the context of the function with call() or apply()
+
+       // let's take the div with id #main
+       var clickDiv = document.getElementById( 'click' );
+       // change its color with call() and changeColor()
+       changeBgColor.call( clickDiv, 'red' );
+
+
+
+
+
+
+    </script>
+</body>
+</html>
