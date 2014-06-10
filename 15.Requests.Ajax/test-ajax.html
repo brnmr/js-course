@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>15.Ajax.Requests</title>
+	<script type="text/javascript" src="class.js"></script>
+	<script type="text/javascript" src="helpers.js"></script>
+	<script type="text/javascript" src="request.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+
+	var xhr = new XMLHttpRequest();
+	xhr.open( 'POST', 'http://petakov.com/js-course/hello-ajax.php', true );
+	xhr.onload = function ( event ) {
+		var div = document.createElement( 'div' );
+		div.innerHTML = this.responseText;
+		document.body.appendChild( div );
+	};
+	var data = new  FormData();
+	data.append( 'name', 'Branimir' );
+	data.append( 'lname', 'Petakov' );
+	data.append( 'alias', 'Brazzo' );
+	/*xhr.setRequestHeader( 'Content-type', 'application/x-www-form-urlencoded' );*/
+	xhr.send( data );
+
+
+
+	</script>
+</body>
+</html>
