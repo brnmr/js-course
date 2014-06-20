@@ -1,0 +1,38 @@
+<html>
+<head>
+	<title>Examples with Base Library by Dean Edwards</title>
+	<script type="text/javascript" src="../base.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+	// Example of Dean Edwards's Base Library for Simple Class Creation and Inheritance
+		var Person = Base.extend({
+			// The constructor of the Person class
+			constructor : function( name ) {
+				this.name = name;
+			},
+
+			// A simple method of the Person Class
+			getName : function() {
+				return this.name;
+			}
+		});
+
+		// Create a new User class that inherits from the Person class
+		var User = Person.extend({
+			// Create the User class constructor
+			constructor : function( name, password ) {
+				// which, in turn calls the parent classes' constructor method
+				this.base( name );
+				this.password = password;
+			},
+
+			// Create another, simple method for the User
+			getPassword : function() {
+				return this.password;
+			}
+		});
+
+	</script>
+</body>
+</html>
