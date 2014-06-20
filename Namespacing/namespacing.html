@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Namespacing</title>
+</head>
+<body>
+	<script type="text/javascript">
+		/*
+			Namespacing in JavaScript and How It's Implemented
+		*/
+
+		// Create a default, global, namespace
+		var YAHOO = {};
+
+		// Setup some child namespaces, using objects
+		YAHOO.util = {};
+
+		// Create the final namespace, which contains a property with a function
+		YAHOO.util.Event = {
+			addEventListener : function() {}
+		};
+
+		// Call the function within that particular namespace
+		YAHOO.util.Event.addEventListener();
+
+		/*
+			Dojo Library Namespacing Approach
+		*/
+		// Include the Dojo Framework
+		/*
+			<script type="text/javascript" src="dojo.js"> <\/script>
+		*/
+		// Then include different Dojo Packages
+			// Two different packages are imported and used to create
+			// an Accordian Container Widger
+		/* 
+			dojo.require( 'dojo.widget.AccordianContainer' );
+			dojo.require( 'dojo.widget.ContentPane' );
+		*/
+
+// ----------------------------------------------------------------------------------
+
+		/* Yahoo UI Namespacing Approach */
+
+		// Import the main Yahoo UI Library ==> YAHOO.js
+		// Import the events package        ==> event.js
+
+		// Use the imported Yahoo UI Library
+		// YAHOO.util.Event.AddListener( 'button', 'click', function() {} );
+
+
+
+	</script>
+</body>
+</html>
