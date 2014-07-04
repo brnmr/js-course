@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Document Object Model</title>
+</head>
+<body>
+	<div class="parent">
+		<div class="node">Node1</div>
+		<div class="node">Node2</div>
+		<div class="node">Node3</div>
+	</div>
+	
+	<script type="text/javascript">
+	/* 
+		A Workaround for the White-Space Bug in XML Documents
+	*/
+	function cleanWhitespace( element ) {
+		// If no element is provided, do the whole HTML document
+		element = element || document;
+
+		// Use the first child as a starting point
+		var cur = element.firstChild;
+
+		// Go unitl there are no more child nodes
+		while ( cur != null ) {
+
+			// If the node is a text node, and it contains nothing but whitespace
+			if( cur.nodeType == 3 && ! /\S/.test( cur.nodeValue ) ) {
+				// Remove the text node
+				element.removeChild( cur );
+
+				// Otherwise, if it's an element
+			} else if ( cur.nodeType == 1 ) {
+				// Recurse down through the document
+				cleanWhitespace( cur );
+			}
+
+			cur = cur.nextSibling; // Move through the child nodes
+		}
+	};
+
+	/*
+		A Function for Finding the Previous Sibling Element in Relation to an Element
+	*/
+	function prev( elem ) {
+		do {
+			elem = elem.previousSibling;
+		} while ( elem && elem.nodeType != 1 );
+		return elem;
+	};
+
+	/*
+		A Function for Finding the Next Sibling Element in Relation to an Element
+	*/
+	function next( elem ) {
+		do {
+			elem = elem.nextSibling;
+		} while ( elem && elem.nodeType != 1 );
+		return elem;
+	};
+
+	/*
+		A Function for Finding the First Child Element of an Element
+	*/
+	function first( elem ) {
+		elem = elem.firstChild;
+		return elem && elem.nodeType != 1 ? next( elem ) : elem;
+	};
+
+	/*
+		A Function for Finding the Last Child Element of an Element
+	*/
+	function last( elem ) {
+		elem = elem.lastChild;
+		return elem && elem.nodeType != 1 ? prev( elem ) : elem;
+	};
+
+	/*
+		A Function for Finding the the Parent of an Element
+	*/
+	function parent( elem, num ) {
+		num = num || 1;
+		for ( var i = 0; i < num; i += 1 ) {
+			if ( elem != null ) {
+				elem = elem.parentNode;
+			}
+		}
+		return elem;
+	}
+
+	/*
+		Dynamically Binding a New DOM Navigation Function to ALL HTML DOM Elements
+	*/
+	HTMLElement.prototype.nextElem = function() {
+		var elem = this;
+		do {
+			elem = elem.nextSibling;
+		} while ( elem && elem.nodeType != 1 );
+		return elem;
+	};
+
+	HTMLElement.prototype.prevElem = function() {
+		var elem = this;
+		do {
+			elem = elem.previousSibling;
+		} while ( elem && elem.nodeType != 1 );
+		return elem;
+	};
+
+	HTMLElement.prototype.firstElem = function () {
+		elem = this.firstChild;
+		return elem && elem.nodeType != 1 ? next( elem ) : elem;
+	};
+
+	HTMLElement.prototype.lastElem = function() {
+		elem = this.lastChild;
+		return elem && elem.nodeType != 1 ? prev( elem ) : elem;
+	};
+
+	HTMLElement.prototype.parent = function parent( num ) {
+		elem = this;
+		num = num || 1;
+		for ( var i = 0; i < num; i += 1 ) {
+			if ( elem != null ) {
+				elem = elem.parentNode;
+			}
+		}
+		return elem;
+	}
+
+	/*
+		A Function for Locating Elements by Tag name Within an HTML DOM Document
+	*/
+	function tag( name, elem ) {
+		// If the context element is not provided, search the whole document
+		return ( elem || document ).getElementsByTagName( name );
+	};
+
+	/*
+		A Function That Searches fo All Elements That Have a Particular Class Name
+	*/
+	function hasClass( name, type ) {
+		var r = [];
+
+		// Locate the class name (allows for multiple class names)		
+		var re = new RegExp( '(^|\\s)' + name + '(\\s|$)' );
+
+		// Limit search by type, or lrough all elements
+		var e = document.getElementsByTagName( type || '*' );
+
+		for( var j = 0; j < e.length; j++ ) {
+			// If the element has the class, add it to return
+			var str = e[ j ].getAttribute( 'class' );
+			if( re.test( str ) ) {
+				r.push( e[ j ] );
+			}
+		}
+		return r;
+	}
+
+	/* 
+		A Generic Function for Treiving the Text Contents of an Element
+	*/
+	function text( element ) {
+		var txt = '';
+
+		// If an element was passed, get its children,
+		// otherwise assume it's an array
+		element = element.childNodes || element;
+
+		// Look through all child nodes
+		for ( var j = 0; j < element.length; j++ ) {
+			// If it's not an element, append its text value
+			// Otherwise, recurse through all the element's children
+			txt += element[ j ].nodeType != 1 ? element[ j ].nodeValue : text( element[ j ].childNodes );
+		}
+
+		// Return the matched text
+		return txt;
+	}
+	
+
+
+	</script>
+
+
+</body>
+</html>

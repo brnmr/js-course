@@ -1,0 +1,46 @@
+<html>
+<head>
+	<title>Working with Element Attributes</title>
+</head>
+<body>
+	<form name="myForm" action="/test.cgi" method="POST">
+		<input type="text">
+	</form>
+	<script type="text/javascript">
+		/*
+			Determining Whether an Element Has a Certain Attribute
+		*/
+		function hasAttribute ( elem, name ) {
+			return elem.getAttribute( name ) != null;
+		};
+
+		/*
+			Getting and Setting the Values of Element Attributes
+		*/
+		function attr( elem, name, value ) {
+			// Make sure that a valid name was provided
+			if ( !name || name.constructor != String ) return '';
+
+			// Figure out if the name is one of the weird naming cases
+			name = {
+				'for'   : 'htmlFor',
+				'class' : 'className'
+			}[ name ] || name;
+
+			// If the user is setting a value, also
+			if ( typeof value != 'undefined' ) {
+				// Set the quick way first
+				elem[ name ] = value;
+
+				// If we can, use setAttribute()
+				if ( elem.setAttribute ) {
+					elem.setAttribute( name, value );
+				}
+			}
+
+			// Return the value of the attribute
+			return elem[ name ] || elem.getAttribute( name ) || '';
+		}
+	</script>
+</body>
+</html>
