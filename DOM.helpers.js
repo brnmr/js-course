@@ -242,3 +242,122 @@ function create( elem ) {
 	}
 	return document.createElement( elem );
 }
+
+/** 
+ * @function checkElem
+ * 
+ * A Helper Function for Converting an Array of Mixed DOM Node/HTML String Arguments into a
+ * Pure Array of DOM Nodes
+ *
+ * @param elem 	 {Element}	HTML Element
+ *
+ * @returns {Element} HTML Element
+**/
+
+function checkElem( elem ) {
+	var r = [];
+	// Force the argument into an array, if it isn't already
+	if ( elem.constructor != Array ) {
+		elem = [ elem ];
+	}
+
+	for ( var i = 0; i < elem.length; i++ ) {
+		// If there is a String
+		if ( elem[ i ].constructor == String ) {
+			// Create a temporary element to house the HTML
+			var div = document.createElement( 'div' );
+
+			// Inject the HTML, to convert it into a DOM structure
+			div.innerHTML = elem[ i ];
+
+			// Extract the DOM Structure back out of the temp div
+			for ( var j = 0; j < div.childNodes.length; j++ ) {
+				r[ r.length ] = div.childNodes[ j ];
+			}
+		} else if ( elem[ i ].length ) {
+			// if it's an array Assum that it's an array of DOM Nodes
+			for ( var k = 0; k < elem[ i ].length; k++ ) {
+				r[ r.length ] = elem[ i ][ k ];
+			}
+		} else {
+			// Otherwise, assume it's a DOM Node
+			r[ r.length ] = elem[ i ];
+		}
+	}
+
+	return r;
+}
+
+/** 
+ * @function before
+ * 
+ * A Function for Inserting an Element Before Another Element
+ *
+ * @param parent {Element}  HTML Elements
+ * @param before {Element}  HTML Element
+ * @param elem 	 {Element}	HTML Element
+ *
+**/
+function before( parent, before, elem ) {
+	// Check if no parent node was provided
+	if ( elem == null ) {
+		elem   = before;
+		before = parent;
+		parent = before.parentNode;
+	}
+
+	// Get the new array of elements
+	var elems = checkElem( elem );
+
+	// Move through the array backwards, because we're prepending elments
+	for ( var i = elems.length - 1; i >= 0; i-- ) {
+		parent.insertBefore( elems[ i ], before );
+	}
+}
+
+/** 
+ * @function append
+ * 
+ * A Function for Appending an Element As a Child of Another Element
+ *
+ * @param parent {Element}  HTML Elements
+ * @param elem 	 {Element}	HTML Element
+ *
+**/
+function append( parent, elem ) {
+	// Get the array of elements
+	var elems = checkElem( elem );
+
+	// Append them all to the element
+	for ( var i = 0; i <= elems.length; i++ ) {
+		parent.appendChild( elems[ i ] );
+	}
+}
+
+/** 
+ * @function remove
+ * 
+ * A Function for Removing a Node from the DOM
+ *
+ * @param elem {Element}	HTML Element
+ *
+**/
+function remove( elem ) {
+	if ( elem ) {
+		elem.parentNode.removeChild( elem );
+	}
+}
+
+/** 
+ * @function empty
+ * 
+ * A Function for Removing All Child Nodes from an Element
+ *
+ * @param elem {Element}	HTML Element
+ *
+**/
+function empty( elem ) {
+	while ( elem.firstChild ) {
+		remove( elem.firstChild );
+	}
+}
