@@ -10,6 +10,9 @@
 			<input type="text">
 			<input type="submit">
 		</form>
+		<a href="#">Link 1</a>
+		<a href="#">Link 2</a>
+		<a href="#">Link 3</a>
 	</div>
 	<script type="text/javascript" src="../events.helpers.js"></script>
 	<script type="text/javascript">
@@ -110,6 +113,24 @@
 	removeEvent( document.body, 'keypress', keyPressHandler );
 	removeEvent( document.getElementsByTagName( 'form' )[ 0 ], 'submit', blockSubmit );
 
+	// Attaching Pairs of Events to Elements to Allow for Accessible Web Page Use
+	// // find all <a> elements
+	var anchors = document.getElementsByTagName( 'a' );
+	for ( var i = 0; i < anchors.length; i++ ) {
+		// Attach a mouseover and focuse event handler to the <a>,
+		// which changes the <a> background to blue when the user either
+		// mouse over the link or focuses on it (using the keyboard)
+		anchors[ i ].onmouseover = anchors[ i ].onfocus = function() {
+			this.style.backgroundColor = 'blue';
+		};
+
+		// Attach a mouseout and blur event handler to the <a>, which
+		// changes the <a> background color to its default white, when
+		// the user moves away from the link
+		anchors[ i ].onmouseout = anchors[ i ].onblur = function() {
+			this.style.backgroundColor = 'white';
+		};
+	}
 	
 		
 	</script>
