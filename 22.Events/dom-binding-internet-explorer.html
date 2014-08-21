@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>DOM Binding: Internet Explorer</title>
+</head>
+<body>
+	<div>
+		<form action="test.php">
+			<input type="text">
+			<input type="text">
+			<input type="submit">
+		</form>
+	</div>
+	<script type="text/javascript" src="../events.helpers.js"></script>
+	<script type="text/javascript">
+	/* DOM Binding: Internet Explorer 8,9,10 */
+
+	// Sample of Attaching Event Handlers to Elements Using the IE Way of Binding Events
+		// Find the first <form> element and attach 'submit' event handler
+		document.getElementsByTagName( 'form' )[ 0 ].attachEvent( 'onsubmit', function() {
+			console.log( 'submit is blocked' );
+			return stopDefault();
+		});
+
+		// Attach a keypress event handler to the <body>
+		document.body.attachEvent( 'onkeypress', myKeyPressHandler );
+		function myKeyPressHandler( e ) {
+		// do sth
+		console.log( e.keyCode );
+		};
+
+		// Attach an load event handler to the page
+		window.attachEvent( 'onload', function( e ){
+			console.log( 'the page is loaded' );
+		});
+		
+	</script>
+
+</body>
+</html>

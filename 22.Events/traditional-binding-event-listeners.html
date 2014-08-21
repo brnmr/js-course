@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Binding Event Listeners</title>
+</head>
+<body>
+	<div>
+		<form action="test.php">
+			<input type="text">
+			<input type="text">
+			<input type="submit">
+		</form>
+	</div>
+	<script type="text/javascript" src="../events.helpers.js"></script>
+	<script type="text/javascript">
+		/* TRADIONAL BINDING OF EVENTS */
+
+		// Find the first <form> and attach a 'submit' event handler
+		document.getElementsByTagName( 'form' )[ 0 ].onsubmit = function( e ) {
+			// Stop all form submission attempts
+			console.log( 'submit is blocked' ); // submit is blocked
+			return stopDefault( e );
+		}
+
+		// Attach a keypress event handler to the <body> of the document
+		document.body.onkeypress = myKeyPressHandler;
+		function myKeyPressHandler() {
+			// Do something
+			console.log( 'myKeyPressHandler is called' );
+		}
+
+		// Attach an load event handler to the page
+		window.onload = function() {
+			// Do something
+		}
+
+		// Please note that Event Hanlders in Tradional Binding overwrites each other
+			// bind your initial load handler
+			window.onload = myFirstHandler;
+			function myFirstHandler() {
+				console.log( 'My first handler' );
+			}
+
+			// somewhere, in another library that you've included,
+			// your first handler is overwritten and only the 2nd one is called on page load
+			window.onload = mySecondHandler;
+			function mySecondHandler() {
+				console.log( 'My second handler' );
+			}
+	</script>
+
+</body>
+</html>

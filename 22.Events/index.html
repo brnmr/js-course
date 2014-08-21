@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Events - Examples</title>
+	<style type="text/css">
+		.list {width: 100px;}
+	</style>
+</head>
+<body>
+	<div id="test">
+		This is a test division!
+	</div>
+	<ul>
+		<li class="list"><a href="#">List Item 1</a></li>
+		<li class="list"><a href="#">List Item 2</a></li>
+		<li class="list"><a href="#">List Item 3</a></li>
+	</ul>
+
+	<textarea>
+
+	</textarea>
+
+	<p>p#1</p><p>p#2</p><p>p#3</p><p>p#4</p>
+
+<script type="text/javascript">
+	// Register a function to be called whenever the page is loaded
+	window.onload = loaded;
+
+	// The function to call whenever the page is loaded
+	function loaded() {
+		// The page is loaded now, so start doing stuff
+		var elem = document.getElementById( 'test' );
+		elem.style.border     = '1px solid #888888';
+		elem.style.background = '#666666';
+		elem.style.color      = '#ffffff';
+	}	
+
+	// Find all <li> elements
+	var li = document.getElementsByTagName( 'li' );
+
+	// Attach an event handlers to them
+	for ( var i = 0; i < li.length; i++ ) {
+		// Attach a mouseover event
+		/*li[ i ].addEventListener( 'mouseover', function() {
+			this.style.backgroundColor = 'red';
+			this.style.color           = 'white';	
+		})*/
+
+		li[ i ].onmouseover = function( event ) {
+			this.style.backgroundColor  = 'red';
+			this.firstChild.style.color = 'white';
+
+			console.log( event ); // log the event object
+		};
+
+		// Attach a mouseout event
+		/*li[ i ].addEventListener( 'mouseout', function() {
+			this.style.backgroundColor = 'white';
+			this.style.color           = 'black';	
+		})*/
+
+		li[ i ].onmouseout = function( event ) {
+			this.style.backgroundColor  = 'white';
+			this.firstChild.style.color = 'blue';
+
+			console.log( event ); // log the event object
+		};
+	}
+
+	/*
+		* Overriding Functionality Using DOM Events - Disable the Enter Key within <textarea>
+	*/
+	// Find the first <textarea> on the page and bind a keypress listener
+	document.getElementsByTagName( 'textarea' )[ 0 ].onkeypress = function( event ) {
+		// If no event object exists, then grab the global (IE Only) one 
+		event = event || window.event;
+
+		// If the Enter key is pressed, return false (causeing it to do nothing)
+		return event.keyCode != 13;
+	}
+
+	/*
+		* Changing the Background and Foreground Color of All <li> Elements Whenever They are Clicked
+	*/
+	// Find all <li> elements and bind the click handler to each of them
+	var listItems = document.getElementsByTagName( 'li' );
+
+	for ( var j = 0; j < listItems.length; j++ ) {
+		listItems[ j ].onclick = handleClick;
+	}
+
+	// The function for handling the click event
+	function handleClick() {
+		this.style.backgroundColor = 'gray';
+		this.style.color = 'white';
+	}
+
+	/*
+		* A Generic Function for Stopping Event Bubbling
+		*
+		* @param event {Object} Event Object
+	*/
+	function stopBubble( event ) {
+		// If an event object is provided, the this is a non-IE browser
+		if ( event && event.stopPropagation ) {
+			// and therefore it support the W3C stopPropagation() method
+			event.stopPropagation();
+		} else {
+			// Otherwise, we need to sue the Internet Explorer way of cancelling event bubbling
+			window.event.cancelBubble = true;
+		}
+	}
+
+	// Locate and traverse all p elements in the DOM
+	var all = document.getElementsByTagName( 'p' );
+
+	for ( var k = 0; k < all.length; k++ ) {
+		// Watch for when the user moves his mouse over the element
+		// and add ared border around the element
+		all[ k ].onmouseover = function( e ) {
+			this.style.border = '1px solid red';
+			stopBubble( e );
+		};
+
+		// Watch for when the user moves back out of the element
+		// and remove the border that we added
+		all[ k ].onmouseout = function( e ) {
+			this.style.border = '0px';
+			stopBubble( e );
+		};
+	}
+
+	/*
+		* A Generic Function for Preventing the Default Browser Action from Occurring
+		*
+		* @param e {Object} Event Object
+	*/
+	function stopDefault( e ) {
+		// Prevent the default browser action (W3C)
+		if ( e && e.preventDefault ) {
+			e.preventDefault();
+		} else {
+			// IE 
+			window.event.returnValue = false;
+		}
+		return false;
+	}
+
+</script>
+
+</body>
+</html>

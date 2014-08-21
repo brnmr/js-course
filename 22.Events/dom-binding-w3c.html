@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>DOM Binding: W3C</title>
+</head>
+<body>
+	<div>
+		<form action="test.php">
+			<input type="text">
+			<input type="text">
+			<input type="submit">
+		</form>
+	</div>
+	<script type="text/javascript" src="../events.helpers.js"></script>
+	<script type="text/javascript">
+	/* DOM Binding: W3C */
+
+	// Sample piece of code that use the W3C Way of Binding Event Handlers
+	document.getElementsByTagName( 'form' )[ 0 ].addEventListener( 'submit', function( e ) {
+		console.log( 'submission is blocked' );
+		return stopDefault( e ); 
+	}, false );
+
+	// Attach keypress handler to the <body> of the document
+	document.body.addEventListener( 'keypress', myKeyPressHandler, false );
+	function myKeyPressHandler( e ) {
+		// do sth
+		console.log( 'keypress handler is triggered', 'keycode: ' + e.charCode );
+	};
+
+	// Attach a load event handler
+	window.addEventListener( 'load', function() {
+		console.log( 'The window is loaded' );
+	}, false );
+		
+	</script>
+
+</body>
+</html>

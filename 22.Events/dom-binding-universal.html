@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>DOM Binding: Universal Approach</title>
+</head>
+<body>
+	<div>
+		<form action="test.php">
+			<input type="text">
+			<input type="text">
+			<input type="submit">
+		</form>
+	</div>
+	<script type="text/javascript" src="../events.helpers.js"></script>
+	<script type="text/javascript">
+	/* DOM Binding: Universal by Dean Edwards, 2005 */
+	// Add Event/removeEvent helper functions
+
+	function addEvent( element, type, handler ) {
+		// assign each event handler a unique ID
+		if ( !handler.$$guid ) { 
+			handler.$$guid = addEvent.guid++; 
+		}
+
+		// create a hash table of event types for the element
+		if ( !element.events ) {
+			element.events = {};
+		}
+
+		// create a hash table of event handlers for each element/event pair
+		var handlers = element.events[ type ];
+		if ( !handlers ) {
+			handlers = element.events[ type ] = {};
+
+			// store the existing event handler (if there is one)
+			if ( element[ 'on' + type ]) {
+				handlers[ 0 ] = element[ 'on' + type ];
+			}
+		}
+
+		// store the event handler in the hash table
+		handlers[ handler.$$guid ] = handler;
+
+		// assign a global event handler to do all the work
+		element[ 'on' + type ] = handleEvent;
+	};
+
+	// a counter used to create unique IDs
+	addEvent.guid = 1;
+
+	function removeEvent( element, type, handler ) {
+		// delete the event handler from the hash table
+		if ( element.events && element.events[ type ]) {
+			delete element.events[ type ][ handler.$$guid ];
+		}	
+	};
+
+	function handleEvent( event ) {
+		var returnValue = true;
+
+		// grab the event object ( IE uses a global event object )
+		event = event || fixEvent( window.event );
+
+		// get a reference to the hash table of event handlers
+		var handlers = this.events[ event.type ];
+
+		// execute each event handler
+		for ( var i in handlers ) {
+			this.$$handleEvent = handlers[ i ];
+			if ( this.$$handleEvent( event ) === false ) {
+				returnValue = false;
+			}
+		}
+
+		return returnValue;
+	};
+
+	// Add some 'mising' methods to IE's event object
+	function fixEvent( event ) {
+		// add W3C standart event methods
+		event.preventDefault  = fixEvent.preventDefault;
+		event.stopPropagation = fixEvent.stopPropagation;
+		return event;
+	}
+
+	fixEvent.preventDefault = function() {
+		this.returnValue = false;
+	};
+
+	fixEvent.stopPropagation = function() {
+		this.cancelBubble = true;
+	};
+
+	// EXAMPLES
+	// Add event handler to <body> keypress
+	addEvent( document.body, 'keypress', keyPressHandler );
+	function keyPressHandler( e ) {
+		console.log( 'keypress charCode:', e.charCode );	
+	}
+
+	// Add event handler to the submission of the form that in fact blocks the submission
+	addEvent( document.getElementsByTagName( 'form' )[ 0 ], 'submit', blockSubmit );
+	// the handler
+	function blockSubmit( e ) {
+		console.log( 'submission is blocked' );
+		e.preventDefault();
+	}
+
+	// remove the attached above events
+	removeEvent( document.body, 'keypress', keyPressHandler );
+	removeEvent( document.getElementsByTagName( 'form' )[ 0 ], 'submit', blockSubmit );
+
+	
+		
+	</script>
+
+</body>
+</html>
