@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JavaScript and CSS</title>
+	<style type="text/css">
+		.parent { padding: 10px; }
+		.test {
+			width: 200px;
+			border: 1px solid red;
+			text-align: center;
+		}
+		p { height: 100px; position: relative;}
+	</style>
+</head>
+<body>
+	<div class="test">Test division</div>
+	<div class="parent">
+		<p style="widht: 200px">Test paragraph - should be 100 pixels tall.</p>
+	</div>
+	<script type="text/javascript" src="../js.and.css.helpers.js"></script>
+	<script type="text/javascript">
+		/* 
+			A Situation Where the Computed Value of an Element's CSS is Not Necessarily
+			the Same As the Values Made Available in the Style Object
+		*/
+		window.onload = function() {
+			// Locate the paragraph to check the height
+			var p = document.getElementsByTagName( 'p' )[ 0 ];
+
+			// Check the height the tradinional way
+			console.log( p.style.height + ' should be null' );
+
+			// Check the computed value of the height
+			console.log( getStyle( p, 'height' ) + ' should be 100px' );
+		};
+	</script>
+</body>
+</html>
