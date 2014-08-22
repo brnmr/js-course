@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Drag and Drop</title>
+	<script type="text/javascript" src="../dom-drag.js"></script>
+	<script type="text/javascript">
+		window.onload = function() {
+			// Initalize the DOM-Drag function, making the element
+			// with an ID 'window' draggable
+			Drag.init( document.getElementById( 'window' ) );
+		}
+	</script>
+	<style type="text/css">
+		#window {
+			border: 1px solid #ddd;
+			border-top: 15px solid #ddd;
+			background-color: #c4c4c4;
+			width: 250px;
+			height: 250px;
+			position: relative;
+		}
+	</style>
+</head>
+<body>
+	<h1>Draggable Window Demo</h1>
+	<div id="window">
+		I am a draggable window, feel free to move me around!
+	</div>
+	
+</body>
+</html>

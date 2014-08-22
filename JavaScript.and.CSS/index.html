@@ -9,14 +9,16 @@
 			border: 1px solid red;
 			text-align: center;
 		}
-		p { height: 100px; position: relative;}
+		p { height: 100px; position: relative; background-color: gray; }
+		.slide-down { overflow: hidden; border: 1px solid red; height: 100px;}
 	</style>
 </head>
 <body>
 	<div class="test">Test division</div>
 	<div class="parent">
-		<p style="widht: 200px">Test paragraph - should be 100 pixels tall.</p>
+		<p>Test paragraph - should be 100 pixels tall.</p>
 	</div>
+	<div class="slide-down">Slide Down Division</div>
 	<script type="text/javascript" src="../js.and.css.helpers.js"></script>
 	<script type="text/javascript">
 		/* 

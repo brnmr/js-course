@@ -337,7 +337,7 @@ function resetCSS( elem, prop ) {
 }
 
 /*
-  * @function resetCSS
+  * @function restoreCSS
   *
   * Helper Function for restoring the side effects of the resetCSS() function
   *
@@ -352,4 +352,330 @@ function restoreCSS( elem, prop ) {
 	for ( var i in prop )
 		elem.style[ i ] = prop[ i ];
 }
+
+/*
+  * @function hide
+  *
+  * Helper Function for Hiding (using display) an element
+  *
+  * @param elem { HTML Element }
+  *
+  *
+*/
+function hide( elem ) {
+  // Find out what its current display state is
+  var curDisplay = getStyle( elem, 'display' );
+
+  // Remeber its display state for later
+  if ( curDisplay != 'none' ) {
+    elem.$oldDisplay = curDisplay;
+  }
+
+  // Set the display to none (hiding the element)
+  elem.style.display = 'none';
+}
+
+/*
+  * @function show
+  *
+  * Helper Function for Showing (using display) an element
+  *
+  * @param elem { HTML Element }
+  *
+  *
+*/
+function show( elem ) {
+  // Set the display property back to what it use to be, or
+  // use 'block', if no previous display had been saved
+  elem.style.display = elem.$oldDisplay || '';
+}
+
+/*
+  * @function setOpacity
+  *
+  * Helper Function for Adjusting the Opacity Level of an Element
+  *
+  * @param elem { HTML Element }
+  * @param level { Number [0-100] }
+  *
+  *
+*/
+function setOpacity( elem, level ) {
+  // If filters exist, then this is IE, so set the Alpha filters
+  if ( elem.filter ) {
+    elem.style.filters = 'alpha( opacity=' + level + ')';
+  } else {
+    // Otherwise use the W3C opacity property
+    elem.style.opacity = level / 100;
+  }
+}
+
+/*
+  * @function slideDown
+  *
+  * Helper Function for Slowly Revealing a Hidden Element by Increasing Its Height
+  * Over a Matter of One Second
+  *
+  * @param elem { HTML Element }
+  *
+  *
+*/
+function slideDown( elem ) {
+  // Find the full, potential, height of the element
+  var h = fullHeight( elem );
+
+  // Start the slide down at 0
+  elem.style.height = '0px';
+  
+  // Show the element (but you can see it, since the height is 0)
+  show( elem );
+  
+  // We're going to do a 20 'frame' animation that takes
+  // place over one second
+  for ( var i = 0; i <= 100; i += 5 ) {
+  
+  // A closure to make sure that we have the right 'i'
+    (function(){
+      var pos = i;
+    
+      // Set the timeout to occur at the specified time in the future
+      setTimeout(function(){
+    
+      // Set the new height of the element
+      elem.style.height = ( ( pos / 100 ) * h ) + "px";
+      }, ( pos + 1 ) * 10 );
+    })();
+  }
+}
+
+/*
+  * @function fadeIn
+  *
+  * Helper Function for Slowly Revealing a Hidden Element by Increasing Its Opacity
+  * Over a Matter of One Second
+  *
+  * @param elem { HTML Element }
+  *
+  *
+*/
+function fadeIn( elem ) {
+  // Start the opacity at 0
+  setOpacity( elem, 0 );
+
+  // Show the element (but you can't see it, since the opcaity is 0)
+  show( elem );
+
+  // We are going to do a 20 'frame' animation that takes place over one second
+  for ( var i = 0; i <= 100; i += 5 ) {
+    // A closure to make sure that we have the right 'i'
+    (function(){
+      var pos = i;
+
+      // Set the timeout to occur at the specified time in the future
+      setTimeout( function(){
+        // Set the new opacity of the element 
+        setOpacity( elem, pos ); 
+
+      }, ( pos + 1 ) * 10 );
+    })(); // execute the anonymous function
+  }
+}
+
+/*
+  * @function getX
+  *
+  * Helper Function for Finding the Current (Horizontal) Position of the Mouse Cursor Within
+  * the Entire Web Page
+  *
+  * @param e { Object }
+  *
+  * @returns { Number }
+  *
+*/
+function getX( e ) {
+  // Normalize the event object
+  e = e || window.event;
+
+  // Check for the non-IE position, then the IE position
+  return e.pageX || e.clientX + document.body.scrollLeft;
+}
+
+/*
+  * @function getY
+  *
+  * Helper Function for Finding the Current (Vertical) Position of the Mouse Cursor Within
+  * the Entire Web Page
+  *
+  * @param e { Object }
+  *
+  * @returns { Number }
+  *
+*/
+function getY( e ) {
+  // Normalize the event object
+  e = e || window.event;
+
+  // Check for the non-IE position, then the IE position
+  return e.pageY || e.clientY + document.body.scrollTop;
+}
+
+/*
+  * @function getElementX
+  *
+  * Helper Function for Finding the Current (Horizontal 'x') Position of the Mouse Cursor Relative
+  * to the Current Element
+  *
+  * @param e { Object }
+  *
+  * @returns { Number }
+  *
+*/
+// Get the X position of the mouse relative to the element target
+// used in event object 'e'
+function getElementX( e ) {
+  // Find the appropriate element offset
+  return ( e && e.layerX ) || window.event.offsetX;
+}
+
+/*
+  * @function getElementY
+  *
+  * Helper Function for Finding the Current (Vertical 'y') Position of the Mouse Cursor Relative
+  * to the Current Element
+  *
+  * @param e { Object }
+  *
+  * @returns { Number }
+  *
+*/
+// Get the Y position of the mouse relative to the element target
+// used in event object 'e'
+function getElementY( e ) {
+  // Find the appropriate element offset
+  return ( e && e.layerY ) || window.event.offsetY;
+}
+
+/*
+  * @function pageHeight
+  *
+  * Helper Function for Determining the Height (Length) of the Current Web Page
+  *
+  *
+  * @returns { Number }
+  *
+*/
+// Returns the height of the web page
+// (could change if new content is added to the page)
+function pageHeight() {
+  return document.body.scrollHeight;
+}
+
+/*
+  * @function pageWidth
+  *
+  * Helper Function for Determining the Width of the Current Web Page
+  *
+  *
+  * @returns { Number }
+  *
+*/
+// Returns the width of the web page
+// (could change if new content is added to the page)
+function pageWidth() {
+  return document.body.scrollWidth;
+}
+
+/*
+  * @function scrollX
+  *
+  * Helper Function for Determining How Far Horizontally the Browser is Scrolled
+  *
+  * @returns { Number }
+  *
+*/
+function scrollX() {
+  // A shortcut, in case we're using IE6 in Strict Mode
+  var de = document.documentElement;
+
+  // If the pageXOffset of the browser is available, use that
+  return self.pageXOffset || 
+         // Ontherwise, try to get the scroll left off of the root node
+         ( de && de.scrollLeft ) ||
+
+         // Finally, try to get the scroll left off of the body element
+         document.body.scrollLeft;
+}
+
+/*
+  * @function scrollY
+  *
+  * Helper Function for Determining How Far Vertically the Browser is Scrolled
+  *
+  * @returns { Number }
+  *
+*/
+function scrollY() {
+  // A shortcut, in case we're using Internet Explorer 6 in Strict Mode
+  var de = document.documentElement;
+
+  // If the pageYOffset of the browser is available, use that
+  return self.pageYOffset ||
+         // Otherwise, try to get the scroll top off of the root node
+         ( de && de.scrollTop ) ||
+
+         // Finally, try to get the scroll top off of the body element
+         document.body.scrollTop;
+}
+
+/*
+  * @function windowHeight
+  *
+  * Helper Function for Determining the Height of the Brwoser's Viewport
+  *
+  * @returns { Number }
+  *
+*/
+function windowHeight() {
+  // A shortcut, in case we're using IE6 in Strict Mode
+  var de = document.documentElement;
+
+  // If the innerHeight of the browser is available, use that
+  return self.innerHeight ||
+        // Otherwise, try to get the height off of the root node
+        ( de && de.clientHeight ) ||
+
+        // Finally, try to get the height off of the body element
+        document.body.clientHeight;
+}
+
+/*
+  * @function windowWidth
+  *
+  * Helper Function for Determining the Width of the Brwoser's Viewport
+  *
+  * @returns { Number }
+  *
+*/
+function windowWidth() {
+  // A shortcut, in case we're using IE6 in Strict Mode
+  var de = document.documentElement;
+
+  // If the innerHeight of the browser is available, use that
+  return self.innerWidth ||
+        // Otherwise, try to get the width off of the root node
+        ( de && de.clientWidth ) ||
+
+        // Finally, try to get the width off of the body element
+        document.body.clientWidth;
+}
+
+
+
+
+
+
+
+
+
+
 
