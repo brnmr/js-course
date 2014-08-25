@@ -70,6 +70,7 @@
 	</form>
 
 	<script type="text/javascript" src="../forms.validation.helpers.js"></script>
+	<script type="text/javascript" src="../forms.validation.engine.js"></script>
 	<script type="text/javascript">
 		// Examples and Demos
 		window.onload = function() {
@@ -96,6 +97,50 @@
 
 					return false;
 				}
+
+				// Get all input elements that are required
+				var allInputs = document.querySelectorAll( '.required' );
+				// Make sure all inputs are filled
+				for ( var i = 0; i < allInputs.length; i++ ) {
+					if( !checkRequired( allInputs[ i ] ) ) {
+						// Notify the user that the filed is not filled
+						alert( 'Required field is empty: ' + allInputs[ i ].id );
+						return false;
+					}
+				}
+
+				// Get email input to validate for email
+				var email = document.getElementById( 'email' );
+				// Check if the field is valid or not
+				if ( ! checkEmail( email ) ) {
+					alert( 'Please check the entered email address - it seems to be invalid!' );
+					return false;
+				}
+
+				// Get URL input to validate it
+				var url = document.getElementById( 'url' );
+				// Check if the field is valid or not
+				if ( ! checkURL( url ) ) {
+					alert( 'Please check the entered URL address - it seems to be invalid!' );
+					return false;
+				}
+
+				// Get Phone input to validate it
+				var phone = document.getElementById( 'phone' );
+				// Check to see if the field contains a valid phone number
+				if ( ! checkPhone( phone ) ) {
+					alert( 'Please check the entered Phone Number - it seems to be invalid!' );
+					return false;
+				}
+
+				// Get Date input to validate it
+				var date = document.getElementById( 'date' );
+				// Check to see if the field contains a valid date
+				if ( ! checkDate( date ) ) {
+					alert( 'Invalid Date!');
+					return false;
+				}
+
 			};
 		};
 
