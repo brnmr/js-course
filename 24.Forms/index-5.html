@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Validating upon Page Load</title>
+	<style type="text/css">
+		form {
+			font-family: Arial;
+			font-size: 14px;
+			width: 300px;
+		}
+		fieldset {
+			border: 1px solid #CCC;
+			margin-bottom: 10px;
+		}
+		fieldset.login input { width: 125px; }
+		legend {
+			font-weight: bold;
+			font-size: 1.1em;
+		}
+		label {
+			display: block;
+			width: 60px;
+			text-align: right;
+			float: left;
+			padding-right: 10px;
+			margin: 5px 0;
+		}
+		input { margin: 5px 0; }
+		input.text {
+			padding: 0 0 0 3px;
+			width: 172px;
+		}
+		input.submit { margin: 15px 0 0 70px; }
+
+		ul.errors {
+			list-style: none;
+			background: #FFCECE;
+			padding: 3px;
+			margin: 3px 0 3px 70px;
+			font-size: 0.9em;
+			width: 165px;
+		}
+		div.hover-wrap {
+			position: relative;
+			display: inline;
+		}
+		div.hover-wrap input.invalid {
+			border: 2px solid red;
+		}
+		div.hover-wrap ul.errors {
+			display: none;
+		}
+		div.hover-wrap label.hover {
+			position: absolute;
+			top: -0.7em;
+			left: 5px;
+			color: #666;
+		}
+		label span.required {
+			color: red;
+		}
+	</style>
+</head>
+<body>
+	<form action="" method="POST">
+		<fieldset class="login">
+			<legend>Login Information</legend>
+			<div>
+				<label for="username" class="hover">Username</label>
+				<input type="text" id="username" class="required text"/><br />
+			</div>
+			<div>
+				<label for="password" class="hover">Password</label>
+				<input type="password" id="password" class="required text"/>
+			</div>
+		</fieldset>
+		<fieldset>
+			<legend>Personal Information</legend>
+
+			<label for="name">Name</label>
+			<input type="text" id="name" class="required text" /><br />
+
+			<label for="email">Email</label>
+			<input type="text" id="email" class="required email text"/><br/>
+
+			<label for="date">Date</label>
+			<input type="text" id="date" class="required date text"/><br/>
+
+			<label for="url">Website</label>
+			<input type="text" id="url" class="url text" value="http://"/><br/>
+
+			<label for="phone">Phone</label>
+			<input type="text" id="phone" class="phone text"/><br/>
+
+			<label for="age">Over 13?</label>
+			<input type="checkbox" id="age" name="age" value="yes"/><br/>
+
+			<input type="submit" value="Submit Form" class="submit"/>
+		</fieldset>
+	</form>
+	<script type="text/javascript" src="../events.helpers.js"></script>
+	<script type="text/javascript" src="../forms.validation.helpers.js"></script>
+	<script type="text/javascript" src="../forms.validation.engine.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		
+		// Find all input elements that are after labels that have a class of hover
+		$( "label.hover+input" )
+			// Wrap a div (with a class of hover-wrap arround the input element,
+			// resulting in HTML that looks like: <div class='hover-wrap'><input type="text" …/></div>)
+			.wrap("<div class='hover-wrap'></div>")
+
+			// Whenever the input element is focused ( either through a click 
+			// or by keyboard ), hide the label
+			.focus( function() {
+				$(this).prev().hide();
+			})
+
+			// Whenever the user has left the input ( and no text hase been
+			// entered into it ), revela the label again
+			.blur( function() {
+				if ( !this.value ) {
+					$( this ).prev().fadeIn('slow');
+				}
+			})
+
+			// Go through each of the input elements
+			.each( function() {
+				// Move the label to go inside of the <div class='hover-wrap'></div>
+				$( this ).before( $(this).parent().prev() );
+
+				// Make sure that if a value is already in the form, that the label is
+				// automatically hidden
+				if ( this.value ) {
+					$( this ).prev().fadeOut('slow');
+				}
+			});
+
+			// Adding contextual stars (*) and help messages to required fields using jQuery
+			// Find all input fields that are required
+			$( "input.required" )
+				// then locate the previous label
+				.prev( "label" )
+
+				// Change the cursor, over the label, to being more helpful
+				.css( "cursor", "help" )
+
+				// Finally, add a * at the end of the label, to signify the field as required
+				.append(' <span class="required">*</span>' );
+
+	</script>
+</body>
+</html>
