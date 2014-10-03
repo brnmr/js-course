@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Prevent multiple submits</title>
+</head>
+<body>
+	<form action="#">
+		<input type="text" />
+		<input type="password" />
+		<input class="submit" type="submit" value="Log In"/>
+	</form>
+	<script type="text/javascript">
+		// Get the submit button
+		var btn = document.querySelector( '.submit' );
+
+		// Attach event listener
+		btn.addEventListener( 'click', function() {
+			btn.setAttribute( 'disabled', 'disabled'); // make the submit disabled
+				btn.value = 'Loging in, please wait...';
+			}			
+		);
+
+		// After 5 seconds show Succeeded message
+		setTimeout( function(){ 
+
+			alert("Succeeded!");
+
+			btn.value = 'Log In'; // roll back to the default value
+			btn.removeAttribute( 'disabled' ); // remove the disabled attr
+		}, 5000);
+	</script>
+</body>
+</html>
