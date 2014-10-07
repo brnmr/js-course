@@ -30,6 +30,42 @@
 		btn.value = 'Log In'; // roll back to the default value
     }
 
+    // Module Pattern
+    var MODULE_PreventMultipleSubmits = (function () {
+
+  			var targetForm = document.querySelectorAll('.prevent'); // get all forms
+
+  			// Attach 'submit' event to all forms
+  			for ( var i = 0; i < targetForm.length; i++ ) {
+  				targetForm[ i ].addEventListener( 'submit', handleSubmit )
+  			}
+
+  			// Event Handler
+  			function handleSubmit() {
+
+  				var all = this.getElementsByTagName('input'); // get all form inputs
+  				var submitter = this.querySelector('.submitter'); // get the form submit button
+
+  				// Return false, if any of the elements is empty
+				for ( var i = 0; i < all.length; i++ ) {
+					if( all[ i ].value == '') {
+						alert('please fill the elements');
+						return false;
+					} else {
+						return true;
+					}
+				}  				
+					
+				submitter.setAttribute('disabled', 'disabled');	// disabled it during submission
+				submitter.value = 'Loging in...'; // change its value in order to notify the user
+
+				
+
+  			}
+				
+
+		})();
+
 	
 
 	</script>
