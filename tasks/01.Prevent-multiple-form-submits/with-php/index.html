@@ -3,68 +3,61 @@
 <head>
 	<title>Prevent Multiple Submits (PHP version)</title>
 	<style type="text/css">
-		.refreshed { display: none;}
+		.refreshed { display: none; }
+		.error { color: #ff0000; }
 	</style>
 </head>
 <body>
-	<form class="my-form" action="success.php">
+	<form class="prevent" action="success.php" method="POST">
 		<input type="text" />
 		<input type="password" />
-		<input class="submit" type="submit" value="Log In" />		
+		<input class="submitter" type="submit" value="Log In" />	
+		<div class="error"></div>	
 	</form>
-
 	<script type="text/javascript">
-	
-	// Get the submit button	
-	var btn  = document.querySelector('.submit');
 
-	// Attach event listener
-	btn.addEventListener( 'click', function() {
-		btn.setAttribute( 'disabled', 'disabled' ); // disable it 
-		btn.value = 'Loging in, please wait...'; // show to the user that something is happening
-	});
+		var MODULE_PREVENT_MULTIPLE_SUBMITS = ( function() {
 
-	// Reset the submit button
-	onload = function () {
-        btn.removeAttribute( 'disabled' ); // when go back -> enable the input
-		btn.value = 'Log In'; // roll back to the default value
-    }
+			function addEventHandler( node, event, func ) {
 
-    // Module Pattern
-    var MODULE_PreventMultipleSubmits = (function () {
+			    if( node.addEventListener )
+			        node.addEventListener( event, func );
+			    else
+			        node.attachEvent( "on" + event, func );
+			}
 
-  			var targetForm = document.querySelectorAll('.prevent'); // get all forms
+			function validate() {
 
-  			// Attach 'submit' event to all forms
-  			for ( var i = 0; i < targetForm.length; i++ ) {
-  				targetForm[ i ].addEventListener( 'submit', handleSubmit )
-  			}
+			    var args   = Array.prototype.slice.call(arguments);
+			    var e      = args[0];
+			    var inputs = document.getElementsByTagName( 'input' );
+			    
+			    for ( var i = 0; i < inputs.length; i++ ) {
 
-  			// Event Handler
-  			function handleSubmit() {
+			    	if ( inputs[ i ].value == '') {
 
-  				var all = this.getElementsByTagName('input'); // get all form inputs
-  				var submitter = this.querySelector('.submitter'); // get the form submit button
+			    		document.querySelector('.error').innerHTML = 'Please fill all fields.';
 
-  				// Return false, if any of the elements is empty
-				for ( var i = 0; i < all.length; i++ ) {
-					if( all[ i ].value == '') {
-						alert('please fill the elements');
-						return false;
-					} else {
-						return true;
-					}
-				}  				
-					
-				submitter.setAttribute('disabled', 'disabled');	// disabled it during submission
-				submitter.value = 'Loging in...'; // change its value in order to notify the user
+			    		e.cancelBubble = true;
+			    		e.returnValue = false;
 
-				
+			    		if( e.preventDefault ) {
 
-  			}
-				
+			    			e.preventDefault();
 
-		})();
+			    		}
+
+			    		return false;
+			    	}
+			    } 
+			}
+
+			function initializeAll() {
+			    addEventHandler( document.querySelector( '.prevent' ), 'submit', validate );
+			}
+			addEventHandler( window, 'load', initializeAll );
+
+		}());
 
 	
 
